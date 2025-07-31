@@ -1,0 +1,32 @@
+ 
+# Essential for pub.dev scoring - ensures code quality
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Additional rules for better code quality
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_const_declarations: true
+    avoid_unnecessary_containers: true
+    avoid_empty_else: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    use_key_in_widget_constructors: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    unnecessary_late: true
+    
+    # Documentation
+    public_member_api_docs: true
+    lines_longer_than_80_chars: false # Allow longer lines for readability
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  
+  errors:
+    # Make missing documentation an error for public APIs
+    public_member_api_docs: error

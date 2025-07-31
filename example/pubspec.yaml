@@ -1,0 +1,27 @@
+ 
+name: riverpod_sugar_example
+description: Example app demonstrating riverpod_sugar package features
+publish_to: 'none' # This is an example app, not published
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.9
+  
+  # Use the local riverpod_sugar package during development
+  riverpod_sugar:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
