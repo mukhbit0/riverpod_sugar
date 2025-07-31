@@ -6,13 +6,13 @@ First off, thank you for considering contributing to Riverpod Sugar! It's people
 ## 🎯 How Can You Contribute?
 
 ### 🐛 Reporting Bugs
-- Use the [GitHub issue tracker](https://github.com/yourusername/riverpod_sugar/issues)
+- Use the [GitHub issue tracker](https://github.com/mukhbit0/riverpod_sugar/issues)
 - Check if the issue already exists before creating a new one
 - Include reproduction steps, expected behavior, and actual behavior
 - Provide Flutter/Dart version information
 
 ### 💡 Suggesting Features
-- Open a [GitHub discussion](https://github.com/yourusername/riverpod_sugar/discussions) first
+- Open a [GitHub discussion](https://github.com/mukhbit0/riverpod_sugar/discussions) first
 - Describe the use case and why it would be valuable
 - Consider backward compatibility and API consistency
 
@@ -37,7 +37,7 @@ First off, thank you for considering contributing to Riverpod Sugar! It's people
 
 1. **Fork and Clone**
    ```bash
-   git clone https://github.com/yourusername/riverpod_sugar.git
+   git clone https://github.com/mukhbit0/riverpod_sugar.git
    cd riverpod_sugar
    ```
 
@@ -236,8 +236,8 @@ Contributors will be:
 
 If you need help:
 - 📖 Check the [documentation](README.md)
-- 💬 Start a [discussion](https://github.com/yourusername/riverpod_sugar/discussions)
-- 🐛 [Open an issue](https://github.com/yourusername/riverpod_sugar/issues)
+- 💬 Start a [discussion](https://github.com/mukhbit0/riverpod_sugar/discussions)
+- 🐛 [Open an issue](https://github.com/mukhbit0/riverpod_sugar/issues)
 - 📧 Email us at [mukhbit000@gmail.com](mailto:mukhbit000@gmail.com)
 
 Thank you for contributing to Riverpod Sugar! 🙏
