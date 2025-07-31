@@ -389,7 +389,7 @@ We welcome contributions! Here's how you can help:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/riverpod_sugar.git
+git clone https://github.com/mukhbit0/riverpod_sugar.git
 
 # Install dependencies
 flutter pub get
@@ -424,4 +424,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ for the Flutter community**
 
-If you like this package, please give it a ⭐ on [GitHub](https://github.com/yourusername/riverpod_sugar) and a 👍 on [pub.dev](https://pub.dev/packages/riverpod_sugar)!
+If you like this package, please give it a ⭐ on [GitHub](https://github.com/mukhbit0/riverpod_sugar) and a 👍 on [pub.dev](https://pub.dev/packages/riverpod_sugar)!
