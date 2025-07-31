@@ -1,9 +1,9 @@
 name: riverpod_sugar
 description: Essential Flutter widgets and utilities for flutter_riverpod. Includes RxWidget, AsyncValue helpers, form validation, and debouncing tools to reduce boilerplate code.
 version: 1.0.0
-repository: https://github.com/yourusername/riverpod_sugar
-issue_tracker: https://github.com/yourusername/riverpod_sugar/issues
-documentation: https://github.com/yourusername/riverpod_sugar#readme
+repository: https://github.com/mukhbit0/riverpod_sugar
+issue_tracker: https://github.com/mukhbit0/riverpod_sugar/issues
+documentation: https://github.com/mukhbit0/riverpod_sugar#readme
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
