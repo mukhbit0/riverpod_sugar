@@ -1,5 +1,5 @@
 name: riverpod_sugar
-description: 🍯 The sweetest way to use Riverpod! Revolutionary ScreenUtil-style extensions (.state, .text, .toggle) that turn verbose Riverpod code into concise one-liners. 80% less code, 10x faster development, zero learning curve. Complete with RxWidget, easyWhen, FormManager, smart debouncing, and intelligent provider combiners.
+description: The sweetest way to use Riverpod! Revolutionary ScreenUtil-style extensions (.state, .text, .toggle) that turn verbose Riverpod code into concise one-liners. 80% less code, 10x faster development, zero learning curve. Complete with RxWidget, easyWhen, FormManager, smart debouncing, and intelligent provider combiners.
 version: 1.0.1
 repository: https://github.com/mukhbit0/riverpod_sugar
 issue_tracker: https://github.com/mukhbit0/riverpod_sugar/issues
