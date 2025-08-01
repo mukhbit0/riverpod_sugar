@@ -52,19 +52,19 @@ extension BooleanSugar on bool {
 /// Extension on lists to create state providers instantly
 extension ListSugar<T> on List<T> {
   /// Creates a StateProvider with this list as initial value
-  /// Usage: `final itemsProvider = <String>[].items;` or `final usersProvider = <User>[].collection;`
+  /// Usage: `final itemsProvider = &lt;String&gt;[].items;` or `final usersProvider = &lt;User&gt;[].collection;`
   StateProvider<List<T>> get items => StateProvider((ref) => this);
 
   /// Creates a StateProvider for todo lists
-  /// Usage: `final todosProvider = <Todo>[].todos;`
+  /// Usage: `final todosProvider = &lt;Todo&gt;[].todos;`
   StateProvider<List<T>> get todos => StateProvider((ref) => this);
 
   /// Creates a StateProvider for any collection
-  /// Usage: `final productsProvider = <Product>[].collection;`
+  /// Usage: `final productsProvider = &lt;Product&gt;[].collection;`
   StateProvider<List<T>> get collection => StateProvider((ref) => this);
 
   /// Creates a StateProvider for a list of data
-  /// Usage: `final dataProvider = <Map>[].data;`
+  /// Usage: `final dataProvider = &lt;Map&gt;[].data;`
   StateProvider<List<T>> get data => StateProvider((ref) => this);
 }
 
@@ -83,7 +83,7 @@ extension StateProviderSugar<T> on StateProvider<T> {
   T watch(WidgetRef ref) => ref.watch(this);
 }
 
-/// Extension on StateProvider<int> for integer operations
+/// Extension on StateProvider&lt;int&gt; for integer operations
 extension IntProviderSugar on StateProvider<int> {
   /// Increment the integer value by 1
   /// Usage: `countProvider.increment(ref);` or `ageProvider.increment(ref);`
@@ -116,7 +116,7 @@ extension IntProviderSugar on StateProvider<int> {
   void setValue(WidgetRef ref, int value) => ref.read(notifier).state = value;
 }
 
-/// Extension on StateProvider<double> for decimal operations
+/// Extension on StateProvider&lt;double&gt; for decimal operations
 extension DoubleProviderSugar on StateProvider<double> {
   /// Add a value to the current double
   /// Usage: `priceProvider.addValue(ref, 10.5);` or `ratingProvider.addValue(ref, 0.5);`
@@ -156,7 +156,7 @@ extension DoubleProviderSugar on StateProvider<double> {
       ref.read(notifier).state = value;
 }
 
-/// Extension on StateProvider<bool> for boolean operations
+/// Extension on StateProvider&lt;bool&gt; for boolean operations
 extension BoolProviderSugar on StateProvider<bool> {
   /// Toggle the boolean value
   /// Usage: `darkModeProvider.toggle(ref);` or `visibilityProvider.toggle(ref);`
@@ -176,7 +176,7 @@ extension BoolProviderSugar on StateProvider<bool> {
   void setValue(WidgetRef ref, bool value) => ref.read(notifier).state = value;
 }
 
-/// Extension on StateProvider<String> for text operations
+/// Extension on StateProvider&lt;String&gt; for text operations
 extension StringProviderSugar on StateProvider<String> {
   /// Update the text to a new value
   /// Usage: `nameProvider.updateText(ref, "New Name");` or `titleProvider.updateText(ref, "New Title");`
@@ -208,7 +208,7 @@ extension StringProviderSugar on StateProvider<String> {
       ref.read(notifier).state = value;
 }
 
-/// Extension on StateProvider<List<T>> for list operations
+/// Extension on StateProvider&lt;List&lt;T&gt;&gt; for list operations
 extension ListProviderSugar<T> on StateProvider<List<T>> {
   /// Add an item to the list
   /// Usage: `todosProvider.addItem(ref, newTodo);` or `usersProvider.addItem(ref, newUser);`
@@ -336,7 +336,7 @@ class Sugar {
       StateProvider((ref) => initial);
 
   /// Create a list provider instantly
-  /// Usage: `final todos = Sugar.list<Todo>();` or `final numbers = Sugar.list<int>([1, 2, 3]);`
+  /// Usage: `final todos = Sugar.list&lt;Todo&gt;();` or `final numbers = Sugar.list&lt;int&gt;([1, 2, 3]);`
   static StateProvider<List<T>> list<T>([List<T>? initial]) =>
       StateProvider((ref) => initial ?? <T>[]);
 }

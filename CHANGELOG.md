@@ -6,6 +6,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-08-01
+
+### 🐛 **Documentation Fixes**
+
+#### ✅ **Fixed**
+- **HTML escaping in documentation** - Fixed angle brackets in doc comments to prevent HTML interpretation
+- **Dart analyzer warnings** - All documentation comments now properly escape generic type parameters
+- **Code analysis compliance** - Package now passes all lint checks without warnings
+
+#### 📚 **Technical Details**
+- Escaped `<Type>` as `&lt;Type&gt;` in all documentation comments
+- Fixed 5 analyzer warnings related to HTML interpretation in doc comments
+- Maintained full API functionality while improving documentation quality
+
 ## [1.0.1] - 2025-08-01
 
 ### 🧹 **Documentation & Structure Improvements**
