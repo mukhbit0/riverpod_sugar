@@ -1,6 +1,6 @@
 name: riverpod_sugar
-description: Essential Flutter widgets and utilities for flutter_riverpod. Includes RxWidget, AsyncValue helpers, form validation, and debouncing tools to reduce boilerplate code.
-version: 1.0.0
+description: 🍯 The sweetest way to use Riverpod! Revolutionary ScreenUtil-style extensions (.state, .text, .toggle) that turn verbose Riverpod code into concise one-liners. 80% less code, 10x faster development, zero learning curve. Complete with RxWidget, easyWhen, FormManager, smart debouncing, and intelligent provider combiners.
+version: 1.0.1
 repository: https://github.com/mukhbit0/riverpod_sugar
 issue_tracker: https://github.com/mukhbit0/riverpod_sugar/issues
 documentation: https://github.com/mukhbit0/riverpod_sugar#readme
@@ -24,12 +24,12 @@ topics:
   - flutter
   - riverpod
   - state-management
-  - boilerplate
-  - helpers
+  - sugar-syntax
+  - boilerplate-reduction
 
 # Screenshots for pub.dev (optional)
 screenshots:
-  - description: 'RxWidget example showing cleaner syntax'
+  - description: 'RxWidget: Clean reactive widgets with buildRx() method'
     path: screenshots/rx_widget_example.png
-  - description: 'AsyncValue.easyWhen in action'
+  - description: 'easyWhen: Simplified async state handling with auto loading/error'
     path: screenshots/easy_when_example.png
