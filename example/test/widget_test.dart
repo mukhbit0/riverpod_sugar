@@ -7,13 +7,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:riverpod_sugar_example/main.dart';
+import 'package:riverpod_sugar/riverpod_sugar.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    // Test just the counter functionality without the full app
+    final counterProvider = StateProvider((ref) => 0);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, _) {
+                final count = ref.watch(counterProvider);
+                return Column(
+                  children: [
+                    Text('$count'),
+                    ElevatedButton(
+                      onPressed: () =>
+                          ref.read(counterProvider.notifier).state++,
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../utils/sugar_debug.dart';
 
 /// Ultra-concise extensions that make Riverpod state management one-liner.
 /// Inspired by ScreenUtil's .r, .sp, .w, .h approach for maximum simplicity.
@@ -87,33 +88,56 @@ extension StateProviderSugar<T> on StateProvider<T> {
 extension IntProviderSugar on StateProvider<int> {
   /// Increment the integer value by 1
   /// Usage: `countProvider.increment(ref);` or `ageProvider.increment(ref);`
-  void increment(WidgetRef ref) => ref.read(notifier).state++;
+  void increment(WidgetRef ref) {
+    SugarPerformance.trackOperation('increment');
+    ref.read(notifier).state++;
+  }
 
   /// Decrement the integer value by 1
   /// Usage: `countProvider.decrement(ref);` or `scoreProvider.decrement(ref);`
-  void decrement(WidgetRef ref) => ref.read(notifier).state--;
+  void decrement(WidgetRef ref) {
+    SugarPerformance.trackOperation('decrement');
+    ref.read(notifier).state--;
+  }
 
   /// Add a value to the current integer
   /// Usage: `pointsProvider.addValue(ref, 10);` or `balanceProvider.addValue(ref, 50);`
-  void addValue(WidgetRef ref, int value) => ref.read(notifier).state += value;
+  void addValue(WidgetRef ref, int value) {
+    SugarPerformance.trackOperation('addValue');
+    SugarDebugger.validateOperation('addValue', value);
+    ref.read(notifier).state += value;
+  }
 
   /// Subtract a value from the current integer
   /// Usage: `pointsProvider.subtractValue(ref, 5);` or `healthProvider.subtractValue(ref, 20);`
-  void subtractValue(WidgetRef ref, int value) =>
-      ref.read(notifier).state -= value;
+  void subtractValue(WidgetRef ref, int value) {
+    SugarPerformance.trackOperation('subtractValue');
+    SugarDebugger.validateOperation('subtractValue', value);
+    ref.read(notifier).state -= value;
+  }
 
   /// Multiply the current integer by a value
   /// Usage: `multiplierProvider.multiplyBy(ref, 2);`
-  void multiplyBy(WidgetRef ref, int value) =>
-      ref.read(notifier).state *= value;
+  void multiplyBy(WidgetRef ref, int value) {
+    SugarPerformance.trackOperation('multiplyBy');
+    SugarDebugger.validateOperation('multiplyBy', value);
+    ref.read(notifier).state *= value;
+  }
 
   /// Reset the integer to 0
   /// Usage: `counterProvider.resetToZero(ref);` or `scoreProvider.resetToZero(ref);`
-  void resetToZero(WidgetRef ref) => ref.read(notifier).state = 0;
+  void resetToZero(WidgetRef ref) {
+    SugarPerformance.trackOperation('resetToZero');
+    ref.read(notifier).state = 0;
+  }
 
   /// Set to a specific value
   /// Usage: `levelProvider.setValue(ref, 5);` or `pageProvider.setValue(ref, 1);`
-  void setValue(WidgetRef ref, int value) => ref.read(notifier).state = value;
+  void setValue(WidgetRef ref, int value) {
+    SugarPerformance.trackOperation('setValue');
+    SugarDebugger.validateOperation('setValue', value);
+    ref.read(notifier).state = value;
+  }
 }
 
 /// Extension on StateProvider&lt;double&gt; for decimal operations
@@ -310,6 +334,192 @@ extension WidgetRefSugar on WidgetRef {
   Widget showEither(
       StateProvider<bool> provider, Widget whenTrue, Widget whenFalse) {
     return watch(provider) ? whenTrue : whenFalse;
+  }
+
+  /// Create a Text widget displaying any provider value
+  /// Usage: `ref.text(counterProvider)` or `ref.text(nameProvider, style: myStyle)`
+  Widget text<T>(StateProvider<T> provider,
+      {TextStyle? style, TextAlign? textAlign}) {
+    return Text(
+      '${watch(provider)}',
+      style: style,
+      textAlign: textAlign,
+    );
+  }
+
+  /// Create a switch tile for boolean providers
+  /// Usage: `ref.switchTile(darkModeProvider, title: "Dark Mode")`
+  Widget switchTile(
+    StateProvider<bool> provider, {
+    required String title,
+    String? subtitle,
+    Widget? leading,
+    Widget? secondary,
+  }) {
+    return SwitchListTile(
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
+      secondary: leading,
+      value: watch(provider),
+      onChanged: (value) => updateValue(provider, value),
+    );
+  }
+
+  /// Create a checkbox tile for boolean providers
+  /// Usage: `ref.checkboxTile(agreeProvider, title: "I agree to terms")`
+  Widget checkboxTile(
+    StateProvider<bool> provider, {
+    required String title,
+    String? subtitle,
+    Widget? leading,
+    bool? secondary,
+  }) {
+    return CheckboxListTile(
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
+      secondary: leading,
+      value: watch(provider),
+      onChanged: (value) => updateValue(provider, value ?? false),
+    );
+  }
+
+  /// Create a slider for numeric providers
+  /// Usage: `ref.slider(volumeProvider, min: 0, max: 100)`
+  Widget slider(
+    StateProvider<double> provider, {
+    required double min,
+    required double max,
+    int? divisions,
+    String? label,
+    ValueChanged<double>? onChanged,
+  }) {
+    return Slider(
+      value: watch(provider).clamp(min, max),
+      min: min,
+      max: max,
+      divisions: divisions,
+      label: label,
+      onChanged: onChanged ?? (value) => updateValue(provider, value),
+    );
+  }
+
+  /// Create increment/decrement buttons for integer providers
+  /// Usage: `ref.stepper(counterProvider)` or `ref.stepper(ageProvider, step: 5)`
+  Widget stepper(
+    StateProvider<int> provider, {
+    int step = 1,
+    int? min,
+    int? max,
+    Widget? decrementIcon,
+    Widget? incrementIcon,
+  }) {
+    final value = watch(provider);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: decrementIcon ?? const Icon(Icons.remove),
+          onPressed: (min != null && value <= min)
+              ? null
+              : () => updateValue(provider, value - step),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text('$value', style: const TextStyle(fontSize: 18)),
+        ),
+        IconButton(
+          icon: incrementIcon ?? const Icon(Icons.add),
+          onPressed: (max != null && value >= max)
+              ? null
+              : () => updateValue(provider, value + step),
+        ),
+      ],
+    );
+  }
+
+  /// Create a circular progress indicator based on a loading provider
+  /// Usage: `ref.loading(isLoadingProvider)` or `ref.loading(isLoadingProvider, size: 24)`
+  Widget loading(
+    StateProvider<bool> provider, {
+    double? size,
+    Color? color,
+    double? strokeWidth,
+  }) {
+    return showWhen(
+      provider,
+      SizedBox(
+        width: size,
+        height: size,
+        child: CircularProgressIndicator(
+          color: color,
+          strokeWidth: strokeWidth ?? 4.0,
+        ),
+      ),
+    );
+  }
+
+  /// Create a chip widget displaying provider value
+  /// Usage: `ref.chip(statusProvider)` or `ref.chip(tagProvider, color: Colors.blue)`
+  Widget chip<T>(
+    StateProvider<T> provider, {
+    Color? backgroundColor,
+    Color? labelColor,
+    VoidCallback? onDeleted,
+    Widget? avatar,
+  }) {
+    return Chip(
+      label: Text(
+        '${watch(provider)}',
+        style: TextStyle(color: labelColor),
+      ),
+      backgroundColor: backgroundColor,
+      onDeleted: onDeleted,
+      avatar: avatar,
+    );
+  }
+
+  /// Create a card wrapper around any widget, with optional provider-based visibility
+  /// Usage: `ref.card(MyWidget(), visible: showCardProvider)`
+  Widget card(
+    Widget child, {
+    StateProvider<bool>? visible,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    Color? color,
+    double? elevation,
+  }) {
+    final cardWidget = Card(
+      margin: margin,
+      color: color,
+      elevation: elevation,
+      child: padding != null ? Padding(padding: padding, child: child) : child,
+    );
+
+    return visible != null ? showWhen(visible, cardWidget) : cardWidget;
+  }
+
+  /// Create an animated container that responds to provider changes
+  /// Usage: `ref.animatedContainer(colorProvider, duration: Duration(milliseconds: 300))`
+  Widget animatedContainer(
+    StateProvider<Color> provider, {
+    required Duration duration,
+    Widget? child,
+    double? width,
+    double? height,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    Curve curve = Curves.linear,
+  }) {
+    return AnimatedContainer(
+      duration: duration,
+      curve: curve,
+      color: watch(provider),
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      child: child,
+    );
   }
 }
 

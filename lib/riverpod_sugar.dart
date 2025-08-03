@@ -58,9 +58,15 @@ export 'src/helpers/form_manager.dart';
 // Utilities - General purpose tools
 export 'src/utils/debouncer.dart';
 export 'src/utils/provider_combiners.dart';
+export 'src/utils/sugar_validator.dart';
+export 'src/utils/sugar_debug.dart';
+export 'src/utils/sugar_validation.dart';
 
 // Ultra-concise extensions - ScreenUtil style (.r, .sp, .w, .h)
 export 'src/extensions/sugar_extensions.dart';
+
+// Examples and showcase (for documentation and testing)
+export 'src/examples/sugar_showcase.dart';
 
 // Re-export flutter_riverpod for convenience
 export 'package:flutter_riverpod/flutter_riverpod.dart';
