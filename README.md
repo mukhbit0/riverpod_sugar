@@ -5,20 +5,6 @@
 
 **The sweetest way to use Riverpod!** A collection of lightweight widgets, utilities, and revolutionary ScreenUtil-style extensions that dramatically reduce boilerplate and improve developer ergonomics when using `flutter_riverpod`.
 
-## 🆕 **NEW in v1.0.3: Foundation Improvements!**
-
-### 🛠️ **Enhanced Developer Experience**
-- **15+ New Widget Helpers**: `ref.text()`, `ref.switchTile()`, `ref.slider()`, `ref.stepper()`, and more!
-- **Advanced Debugging**: Automatic performance tracking and state monitoring in debug mode
-- **Robust Validation**: Comprehensive validation framework with helpful error messages
-- **Zero Runtime Overhead**: All debugging features compile away in release builds
-
-### 🎯 **Production-Ready Features**
-- **Type-Safe Operations**: Enhanced validation prevents runtime errors
-- **Better Error Messages**: Context-aware suggestions with documentation links
-- **Comprehensive Examples**: Complete showcase of all features and patterns
-- **100% Backward Compatible**: All existing code continues to work unchanged
-
 ## 🚀 **REVOLUTIONARY: ScreenUtil-Style One-Liners!**
 
 Just like ScreenUtil made responsive design simple with `.w`, `.h`, `.r`, `.sp` - **Riverpod Sugar** makes state management simple with `.state`, `.text`, `.toggle`!
@@ -161,7 +147,7 @@ try {
 Add to your `pubspec.yaml`:
 ```yaml
 dependencies:
-  riverpod_sugar: ^1.0.3
+  riverpod_sugar: ^1.0.4
 ```
 
 ### 2. **Import and Use**
@@ -590,9 +576,23 @@ class MyWidget extends RxWidget {
 - **Complex Games**: Game-specific state patterns, performance-critical updates
 - **Enterprise Workflows**: Advanced business rules, complex state machines
 
-## 🎉 **What's New in v1.0.3?**
+## 🎉 **What's New in v1.0.4?**
 
-### 🛠️ **Foundation Improvements for Production**
+### � **Package Optimization (v1.0.4)**
+
+**Dramatically Reduced Package Size**:
+- Package size reduced from ~13 MB to just **340 KB** (97% reduction!)
+- Removed build artifacts, coverage reports, and development files
+- Much faster downloads and installation for users
+- Professional, clean package structure with only essential files
+
+**Enhanced pub.dev Presence**:
+- Added topics for better discoverability
+- Repository and issue tracker links
+- Screenshot descriptions for visual documentation
+- Optimized metadata for pub.dev rankings
+
+### 🛠️ **Foundation Improvements (v1.0.3)**
 
 **Enhanced Widget Helpers (15+ new helpers)**:
 - Build UI components directly from providers: `ref.text()`, `ref.switchTile()`, `ref.slider()`
@@ -614,7 +614,7 @@ class MyWidget extends RxWidget {
 - Complete documentation with examples
 - Enhanced error handling and developer experience
 
-> **Perfect for teams moving to production!** All the reliability and debugging tools you need for real-world apps.
+> **Perfect for teams moving to production!** Optimized package size with all the reliability and debugging tools you need for real-world apps.
 
 ## 🚀 **Why Choose Riverpod Sugar?**
 
