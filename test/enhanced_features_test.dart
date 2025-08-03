@@ -69,62 +69,39 @@ void main() {
         expect(currentValue, true);
       });
 
-      testWidgets('stepper helper creates increment/decrement buttons',
-          (tester) async {
-        final counterProvider = 5.state;
+      // testWidgets('stepper helper creates increment/decrement buttons',
+      //     (tester) async {
+      //   // final counterProvider = 5.state; // Removed - stepper helper removed
 
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: Scaffold(
-                body: Consumer(
-                  builder: (context, ref, _) {
-                    return ref.stepper(counterProvider, min: 0, max: 10);
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
+      //   await tester.pumpWidget(
+      //     ProviderScope(
+      //       child: MaterialApp(
+      //         home: Scaffold(
+      //           body: Consumer(
+      //             builder: (context, ref, _) {
+      //               return const Text('Stepper test removed');
+      //               // return ref.stepper(counterProvider, min: 0, max: 10);
+      //             },
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   );
 
-        expect(find.text('5'), findsOneWidget);
-        expect(find.byIcon(Icons.add), findsOneWidget);
-        expect(find.byIcon(Icons.remove), findsOneWidget);
+      //   expect(find.text('5'), findsOneWidget);
+      //   expect(find.byIcon(Icons.add), findsOneWidget);
+      //   expect(find.byIcon(Icons.remove), findsOneWidget);
 
-        // Test increment
-        await tester.tap(find.byIcon(Icons.add));
-        await tester.pumpAndSettle();
-        expect(find.text('6'), findsOneWidget);
+      //   // Test increment
+      //   await tester.tap(find.byIcon(Icons.add));
+      //   await tester.pumpAndSettle();
+      //   expect(find.text('6'), findsOneWidget);
 
-        // Test decrement
-        await tester.tap(find.byIcon(Icons.remove));
-        await tester.pumpAndSettle();
-        expect(find.text('5'), findsOneWidget);
-      });
-
-      testWidgets('slider helper creates functional slider', (tester) async {
-        final volumeProvider = 50.0.price;
-
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: Scaffold(
-                body: Consumer(
-                  builder: (context, ref, _) {
-                    return ref.slider(volumeProvider, min: 0, max: 100);
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
-
-        expect(find.byType(Slider), findsOneWidget);
-        final slider = tester.widget<Slider>(find.byType(Slider));
-        expect(slider.value, 50.0);
-        expect(slider.min, 0);
-        expect(slider.max, 100);
-      });
+      //   // Test decrement
+      //   await tester.tap(find.byIcon(Icons.remove));
+      //   await tester.pumpAndSettle();
+      //   expect(find.text('5'), findsOneWidget);
+      // });
 
       testWidgets('loading helper shows/hides loading indicator',
           (tester) async {
@@ -163,72 +140,73 @@ void main() {
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });
 
-      testWidgets('chip helper creates chip with provider value',
-          (tester) async {
-        final statusProvider = 'Active'.text;
+      // testWidgets('chip helper creates chip with provider value',
+      //     (tester) async {
+      //   // final statusProvider = 'Active'.text; // Removed - chip helper removed
 
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: Scaffold(
-                body: Consumer(
-                  builder: (context, ref, _) {
-                    return ref.chip(statusProvider,
-                        backgroundColor: Colors.green);
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
+      //   await tester.pumpWidget(
+      //     ProviderScope(
+      //       child: MaterialApp(
+      //         home: Scaffold(
+      //           body: Consumer(
+      //             builder: (context, ref, _) {
+      //               return const Text('Chip test removed');
+      //               // return ref.chip(statusProvider, backgroundColor: Colors.green);
+      //             },
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   );
 
-        expect(find.byType(Chip), findsOneWidget);
-        expect(find.text('Active'), findsOneWidget);
+      //   expect(find.byType(Chip), findsOneWidget);
+      //   expect(find.text('Active'), findsOneWidget);
 
-        final chip = tester.widget<Chip>(find.byType(Chip));
-        expect(chip.backgroundColor, Colors.green);
-      });
+      //   final chip = tester.widget<Chip>(find.byType(Chip));
+      //   expect(chip.backgroundColor, Colors.green);
+      // });
 
-      testWidgets('card helper creates card with conditional visibility',
-          (tester) async {
-        final visibleProvider = true.visible;
+      // testWidgets('card helper creates card with conditional visibility',
+      //     (tester) async {
+      //   final visibleProvider = true.visible;
 
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: Scaffold(
-                body: Consumer(
-                  builder: (context, ref, _) {
-                    return Column(
-                      children: [
-                        ref.card(
-                          const Text('Card Content'),
-                          visible: visibleProvider,
-                          padding: const EdgeInsets.all(16),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => visibleProvider.toggle(ref),
-                          child: const Text('Toggle Card'),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
+      //   await tester.pumpWidget(
+      //     ProviderScope(
+      //       child: MaterialApp(
+      //         home: Scaffold(
+      //           body: Consumer(
+      //             builder: (context, ref, _) {
+      //               return Column(
+      //                 children: [
+      //                   const Text('Card test removed'),
+      //                   // ref.card(
+      //                   //   const Text('Card Content'),
+      //                   //   visible: visibleProvider,
+      //                   //   padding: const EdgeInsets.all(16),
+      //                   // ),
+      //                   ElevatedButton(
+      //                     onPressed: () => visibleProvider.toggle(ref),
+      //                     child: const Text('Toggle Card'),
+      //                   ),
+      //                 ],
+      //               );
+      //             },
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   );
 
-        expect(find.byType(Card), findsOneWidget);
-        expect(find.text('Card Content'), findsOneWidget);
+      //   expect(find.byType(Card), findsOneWidget);
+      //   expect(find.text('Card Content'), findsOneWidget);
 
-        // Hide the card
-        await tester.tap(find.text('Toggle Card'));
-        await tester.pumpAndSettle();
+      //   // Hide the card
+      //   await tester.tap(find.text('Toggle Card'));
+      //   await tester.pumpAndSettle();
 
-        expect(find.byType(Card), findsNothing);
-        expect(find.text('Card Content'), findsNothing);
-      });
+      //   expect(find.byType(Card), findsNothing);
+      //   expect(find.text('Card Content'), findsNothing);
+      // });
     });
 
     group('Safe Operations', () {

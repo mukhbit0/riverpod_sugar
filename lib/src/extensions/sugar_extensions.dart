@@ -383,60 +383,6 @@ extension WidgetRefSugar on WidgetRef {
     );
   }
 
-  /// Create a slider for numeric providers
-  /// Usage: `ref.slider(volumeProvider, min: 0, max: 100)`
-  Widget slider(
-    StateProvider<double> provider, {
-    required double min,
-    required double max,
-    int? divisions,
-    String? label,
-    ValueChanged<double>? onChanged,
-  }) {
-    return Slider(
-      value: watch(provider).clamp(min, max),
-      min: min,
-      max: max,
-      divisions: divisions,
-      label: label,
-      onChanged: onChanged ?? (value) => updateValue(provider, value),
-    );
-  }
-
-  /// Create increment/decrement buttons for integer providers
-  /// Usage: `ref.stepper(counterProvider)` or `ref.stepper(ageProvider, step: 5)`
-  Widget stepper(
-    StateProvider<int> provider, {
-    int step = 1,
-    int? min,
-    int? max,
-    Widget? decrementIcon,
-    Widget? incrementIcon,
-  }) {
-    final value = watch(provider);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: decrementIcon ?? const Icon(Icons.remove),
-          onPressed: (min != null && value <= min)
-              ? null
-              : () => updateValue(provider, value - step),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text('$value', style: const TextStyle(fontSize: 18)),
-        ),
-        IconButton(
-          icon: incrementIcon ?? const Icon(Icons.add),
-          onPressed: (max != null && value >= max)
-              ? null
-              : () => updateValue(provider, value + step),
-        ),
-      ],
-    );
-  }
-
   /// Create a circular progress indicator based on a loading provider
   /// Usage: `ref.loading(isLoadingProvider)` or `ref.loading(isLoadingProvider, size: 24)`
   Widget loading(
@@ -455,70 +401,6 @@ extension WidgetRefSugar on WidgetRef {
           strokeWidth: strokeWidth ?? 4.0,
         ),
       ),
-    );
-  }
-
-  /// Create a chip widget displaying provider value
-  /// Usage: `ref.chip(statusProvider)` or `ref.chip(tagProvider, color: Colors.blue)`
-  Widget chip<T>(
-    StateProvider<T> provider, {
-    Color? backgroundColor,
-    Color? labelColor,
-    VoidCallback? onDeleted,
-    Widget? avatar,
-  }) {
-    return Chip(
-      label: Text(
-        '${watch(provider)}',
-        style: TextStyle(color: labelColor),
-      ),
-      backgroundColor: backgroundColor,
-      onDeleted: onDeleted,
-      avatar: avatar,
-    );
-  }
-
-  /// Create a card wrapper around any widget, with optional provider-based visibility
-  /// Usage: `ref.card(MyWidget(), visible: showCardProvider)`
-  Widget card(
-    Widget child, {
-    StateProvider<bool>? visible,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
-    Color? color,
-    double? elevation,
-  }) {
-    final cardWidget = Card(
-      margin: margin,
-      color: color,
-      elevation: elevation,
-      child: padding != null ? Padding(padding: padding, child: child) : child,
-    );
-
-    return visible != null ? showWhen(visible, cardWidget) : cardWidget;
-  }
-
-  /// Create an animated container that responds to provider changes
-  /// Usage: `ref.animatedContainer(colorProvider, duration: Duration(milliseconds: 300))`
-  Widget animatedContainer(
-    StateProvider<Color> provider, {
-    required Duration duration,
-    Widget? child,
-    double? width,
-    double? height,
-    EdgeInsetsGeometry? padding,
-    EdgeInsetsGeometry? margin,
-    Curve curve = Curves.linear,
-  }) {
-    return AnimatedContainer(
-      duration: duration,
-      curve: curve,
-      color: watch(provider),
-      width: width,
-      height: height,
-      padding: padding,
-      margin: margin,
-      child: child,
     );
   }
 }

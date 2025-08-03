@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2025-08-03
+
+### 🧹 **API Cleanup & Focus**
+
+**Streamlined Widget Helpers**: Removed opinionated and overly-specific widget helpers to maintain package focus on core utility and prevent API bloat.
+
+**Key Changes**:
+
+- ❌ **Removed Bloat Helpers** - Eliminated 5 widget helpers that provided minimal value or forced unnecessary patterns
+- 🎯 **Focused API** - Kept only genuinely useful helpers that solve common real-world problems
+- 🚀 **Cleaner Package** - Reduced cognitive overhead and maintained library simplicity
+- ✅ **Core Helpers Retained** - Kept `ref.text()`, `ref.loading()`, `ref.switchTile()`, `ref.checkboxTile()` - the helpers developers actually use
+
+#### ❌ **Removed Widget Helpers**
+
+The following widget helpers have been removed as they were identified as bloat that forced unnecessary patterns:
+
+- **`ref.stepper()`** - Too specific use case, easy to build manually with standard Flutter widgets
+- **`ref.chip()`** - Trivial wrapper providing no real value over direct `Chip` widget usage  
+- **`ref.card()`** - Too opinionated API that was confusing and offered minimal benefit
+- **`ref.slider()`** - Forces specific design decisions, better to use standard `Slider` with providers
+- **`ref.animatedContainer()`** - Unclear value proposition, overcomplicated simple animations
+
+#### ✅ **Retained Core Helpers**
+
+These widget helpers remain because they solve genuine common problems:
+
+- **`ref.text()`** - Extremely common pattern, saves significant boilerplate
+- **`ref.loading()`** - Essential for loading states, used in most apps
+- **`ref.switchTile()`** - Perfect for settings screens, very commonly needed
+- **`ref.checkboxTile()`** - Natural companion to switch tiles, frequently used
+
+**Rationale**: A focused API with genuinely useful helpers is better than comprehensive coverage that includes questionable utilities. This change maintains the library's core value while eliminating potential confusion and forced patterns.
+
 ## [1.0.4] - 2025-08-03
 
 ### 📦 **Package Optimization & Publishing Preparation**

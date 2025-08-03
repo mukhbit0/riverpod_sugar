@@ -386,27 +386,6 @@ class BuiltInWidgetHelpersExample extends RxWidget {
 
             const SizedBox(height: 16),
 
-            // Slider helper
-            const Text('Volume:'),
-            ref.slider(
-              ProviderCreationExamples.temperature,
-              min: 0,
-              max: 100,
-              divisions: 10,
-              label:
-                  '${ref.watchValue(ProviderCreationExamples.temperature).round()}',
-            ),
-
-            const SizedBox(height: 16),
-
-            // Stepper helper
-            const Text('Counter Stepper:'),
-            const SizedBox(height: 8),
-            ref.stepper(ProviderCreationExamples.counter,
-                step: 5, min: 0, max: 100),
-
-            const SizedBox(height: 16),
-
             // Loading helper
             Row(
               children: [
@@ -420,15 +399,6 @@ class BuiltInWidgetHelpersExample extends RxWidget {
                 const SizedBox(width: 16),
                 ref.loading(ProviderCreationExamples.isLoading, size: 24),
               ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Chip helper
-            ref.chip(
-              ProviderCreationExamples.name,
-              backgroundColor: Colors.blue[100],
-              labelColor: Colors.blue[800],
             ),
           ],
         ),

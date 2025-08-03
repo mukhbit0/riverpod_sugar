@@ -66,7 +66,6 @@ class SugarShowcase extends RxWidget {
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold)),
                 ref.text(userName, style: const TextStyle(fontSize: 18)),
-                ref.chip(rating, backgroundColor: Colors.amber),
                 ref.showWhen(isLoading, const CircularProgressIndicator()),
               ],
             ),
@@ -75,8 +74,6 @@ class SugarShowcase extends RxWidget {
             _buildSection(
               title: '2. Interactive Controls',
               children: [
-                ref.stepper(counter, step: 1, min: 0, max: 100),
-                ref.slider(volume, min: 0, max: 100, divisions: 10),
                 ref.switchTile(notifications, title: 'Notifications'),
                 ref.checkboxTile(isDarkMode, title: 'Dark Mode'),
               ],
@@ -90,11 +87,6 @@ class SugarShowcase extends RxWidget {
                   isDarkMode,
                   const Icon(Icons.dark_mode, size: 48, color: Colors.orange),
                   const Icon(Icons.light_mode, size: 48, color: Colors.yellow),
-                ),
-                ref.card(
-                  const Text('This card is conditionally visible'),
-                  visible: notifications,
-                  padding: const EdgeInsets.all(16),
                 ),
               ],
             ),
@@ -250,7 +242,6 @@ class AsyncExampleWidget extends RxWidget {
           data: (name) => Column(
             children: [
               Text('Welcome, $name!', style: const TextStyle(fontSize: 20)),
-              ref.chip(userName, backgroundColor: Colors.green),
             ],
           ),
           loading: () => const Column(
