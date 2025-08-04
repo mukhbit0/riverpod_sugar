@@ -92,22 +92,23 @@ extension StateProviderSugar<T> on StateProvider<T> {
 /// This enables syntax like: `counterProvider.ref.watch(ref)` and `nameProvider.ref.set(ref, "value")`
 class StateProviderRefAccess<T> {
   final StateProvider<T> _provider;
-  
+
   /// Creates a StateProviderRefAccess for the given provider
   const StateProviderRefAccess(this._provider);
-  
+
   /// Watch the provider value - rebuilds only widgets that call this
   /// Usage: `final count = counterProvider.ref.watch(ref);`
   T watch(WidgetRef ref) => ref.watch(_provider);
-  
+
   /// Read the provider value once - no rebuilding
   /// Usage: `final currentCount = counterProvider.ref.read(ref);`
   T read(WidgetRef ref) => ref.read(_provider);
-  
+
   /// Update the provider value
   /// Usage: `counterProvider.ref.set(ref, 42);`
-  void set(WidgetRef ref, T value) => ref.read(_provider.notifier).state = value;
-  
+  void set(WidgetRef ref, T value) =>
+      ref.read(_provider.notifier).state = value;
+
   /// Get direct access to the notifier
   /// Usage: `counterProvider.ref.notifier(ref).state = newValue;`
   StateController<T> notifier(WidgetRef ref) => ref.read(_provider.notifier);
@@ -115,9 +116,9 @@ class StateProviderRefAccess<T> {
   /// Create a Text widget directly from the provider
   /// Usage: `Text(counterProvider.ref.text(ref))` or `counterProvider.ref.textWidget(ref)`
   String text(WidgetRef ref) => '${ref.watch(_provider)}';
-  
+
   /// Create a Text widget directly - most concise option
-  /// Usage: `counterProvider.ref.textWidget(ref)` 
+  /// Usage: `counterProvider.ref.textWidget(ref)`
   Widget textWidget(WidgetRef ref, {TextStyle? style, TextAlign? textAlign}) {
     return Text(
       '${ref.watch(_provider)}',
@@ -163,8 +164,6 @@ extension IntProviderSugar on StateProvider<int> {
     ref.read(notifier).state -= value;
   }
 
-
-
   /// Reset the integer to 0
   /// Usage: `counterProvider.resetToZero(ref);` or `scoreProvider.resetToZero(ref);`
   void resetToZero(WidgetRef ref) {
@@ -192,8 +191,6 @@ extension DoubleProviderSugar on StateProvider<double> {
   /// Usage: `priceProvider.subtractValue(ref, 5.99);` or `temperatureProvider.subtractValue(ref, 2.5);`
   void subtractValue(WidgetRef ref, double value) =>
       ref.read(notifier).state -= value;
-
-
 
   /// Reset the double to 0.0
   /// Usage: `priceProvider.resetToZero(ref);`
@@ -240,8 +237,6 @@ extension StringProviderSugar on StateProvider<String> {
   /// Usage: `messageProvider.appendText(ref, " world!");` or `logProvider.appendText(ref, "\nNew line");`
   void appendText(WidgetRef ref, String text) =>
       ref.read(notifier).state += text;
-
-
 
   /// Set to a specific text value
   /// Usage: `statusProvider.setValue(ref, "completed");`
@@ -311,8 +306,6 @@ extension ListProviderSugar<T> on StateProvider<List<T>> {
   /// Usage: `listProvider.replaceWith(ref, newList);`
   void replaceWith(WidgetRef ref, List<T> newList) =>
       ref.read(notifier).state = newList;
-
-
 }
 
 /// Extension on WidgetRef for enhanced state watching and management
@@ -324,10 +317,6 @@ extension WidgetRefSugar on WidgetRef {
   /// Read any StateProvider and get its current value (one-time read)
   /// Usage: `final currentCount = ref.readValue(counterProvider);` - Use for one-time access
   T readValue<T>(StateProvider<T> provider) => read(provider);
-
-
-
-
 
   /// Watch a boolean provider and show different widgets based on true/false
   /// Usage: `ref.showEither(darkModeProvider, DarkWidget(), LightWidget())`
@@ -390,7 +379,7 @@ extension WidgetRefSugar on WidgetRef {
     Color? color,
     double? strokeWidth,
   }) {
-    return watch(provider) 
+    return watch(provider)
         ? SizedBox(
             width: size,
             height: size,
@@ -402,5 +391,3 @@ extension WidgetRefSugar on WidgetRef {
         : const SizedBox.shrink();
   }
 }
-
-

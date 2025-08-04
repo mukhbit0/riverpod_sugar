@@ -57,10 +57,13 @@ class RefSyntaxDemo extends RxWidget {
                   children: [
                     const Text('🔥 Enhanced Ref Syntax:',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Count: ${counter.ref.text(ref)}'),     // Descriptive method
-                    Text('User: ${userName.ref(ref)}'),          // Call operator - shortest!
-                    counter.ref.textWidget(ref,                  // Direct widget
-                        style: const TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
+                    Text(
+                        'Count: ${counter.ref.text(ref)}'), // Descriptive method
+                    Text(
+                        'User: ${userName.ref(ref)}'), // Call operator - shortest!
+                    counter.ref.textWidget(ref, // Direct widget
+                        style: const TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -108,7 +111,8 @@ class RefSyntaxDemo extends RxWidget {
                   child: const Text('- Decrement'),
                 ),
                 ElevatedButton(
-                  onPressed: () => counter.ref.set(ref, 0), // Using enhanced syntax!
+                  onPressed: () =>
+                      counter.ref.set(ref, 0), // Using enhanced syntax!
                   child: const Text('Reset'),
                 ),
               ],
@@ -122,7 +126,8 @@ class RefSyntaxDemo extends RxWidget {
                 labelText: 'Update username',
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) => userName.ref.set(ref, value), // Enhanced syntax!
+              onChanged: (value) =>
+                  userName.ref.set(ref, value), // Enhanced syntax!
             ),
 
             const Spacer(),

@@ -653,8 +653,7 @@ class UserProfileWidget extends RxWidget {
                   ref.text(UserStateProviders.email),
                 ],
               ),
-              const Text('Please log in',
-                  style: TextStyle(color: Colors.grey)),
+              const Text('Please log in', style: TextStyle(color: Colors.grey)),
             ),
 
             // Login/logout button

@@ -6,9 +6,9 @@ import 'ref_syntax_demo.dart';
 // --- Providers using Enhanced Sugar Syntax ---
 
 /// Ultra-concise provider creation using extension syntax
-final counter = 0.state;                    // Creates StateProvider<int>
-final userName = "Guest".text;              // Creates StateProvider<String>
-final isDarkMode = false.toggle;            // Creates StateProvider<bool>
+final counter = 0.state; // Creates StateProvider<int>
+final userName = "Guest".text; // Creates StateProvider<String>
+final isDarkMode = false.toggle; // Creates StateProvider<bool>
 
 /// Traditional provider for comparison
 final counterProvider = StateProvider((ref) => 0);
@@ -80,17 +80,22 @@ class HomeScreen extends RxWidget {
                     children: [
                       const Text(
                         '✨ Enhanced Ref Syntax Demo',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10),
                       // Showcase multiple syntax options
-                      Text('Counter: ${counter.ref.text(ref)}',  // Using text method
+                      Text(
+                          'Counter: ${counter.ref.text(ref)}', // Using text method
                           style: const TextStyle(fontSize: 18)),
-                      Text('User: ${userName.ref(ref)}',         // Using call operator
+                      Text('User: ${userName.ref(ref)}', // Using call operator
                           style: const TextStyle(fontSize: 18)),
-                      counter.ref.textWidget(ref,                // Direct widget method
-                          style: const TextStyle(color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 16)),
+                      counter.ref.textWidget(ref, // Direct widget method
+                          style: const TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                     ],
                   ),
                 ),
@@ -102,15 +107,16 @@ class HomeScreen extends RxWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () => counter.increment(ref),    // Extension method
+                    onPressed: () => counter.increment(ref), // Extension method
                     child: const Text('+ Increment'),
                   ),
                   ElevatedButton(
-                    onPressed: () => counter.decrement(ref),    // Extension method
+                    onPressed: () => counter.decrement(ref), // Extension method
                     child: const Text('- Decrement'),
                   ),
                   ElevatedButton(
-                    onPressed: () => counter.ref.set(ref, 0),   // Enhanced ref syntax
+                    onPressed: () =>
+                        counter.ref.set(ref, 0), // Enhanced ref syntax
                     child: const Text('Reset'),
                   ),
                 ],
@@ -129,7 +135,9 @@ class HomeScreen extends RxWidget {
                       const SizedBox(height: 8),
                       const Text('Traditional: ref.watch(counterProvider)'),
                       Text('Sugar: counter.ref(ref) or counter.ref.text(ref)',
-                          style: TextStyle(color: Colors.green.shade700, fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              color: Colors.green.shade700,
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -141,7 +149,8 @@ class HomeScreen extends RxWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RefSyntaxDemo()),
+                    MaterialPageRoute(
+                        builder: (context) => const RefSyntaxDemo()),
                   );
                 },
                 icon: const Icon(Icons.rocket_launch),
@@ -176,12 +185,14 @@ class HomeScreen extends RxWidget {
               const SizedBox(height: 20),
 
               // 3. Debouncer Example with enhanced syntax
-              const Text('Debouncer + Enhanced Syntax:', textAlign: TextAlign.center),
+              const Text('Debouncer + Enhanced Syntax:',
+                  textAlign: TextAlign.center),
               TextField(
-                decoration: const InputDecoration(labelText: 'Update username...'),
+                decoration:
+                    const InputDecoration(labelText: 'Update username...'),
                 onChanged: (value) {
                   debouncer.run(() {
-                    userName.ref.set(ref, value);  // Using enhanced syntax!
+                    userName.ref.set(ref, value); // Using enhanced syntax!
                   });
                 },
               ),
@@ -194,7 +205,7 @@ class HomeScreen extends RxWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => counter.increment(ref),  // Using extension method
+        onPressed: () => counter.increment(ref), // Using extension method
         child: const Icon(Icons.add),
       ),
     );

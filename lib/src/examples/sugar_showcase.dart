@@ -65,7 +65,8 @@ class SugarShowcase extends RxWidget {
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold)),
                 ref.text(userName, style: const TextStyle(fontSize: 18)),
-                ref.showEither(isLoading, const CircularProgressIndicator(), const SizedBox.shrink()),
+                ref.showEither(isLoading, const CircularProgressIndicator(),
+                    const SizedBox.shrink()),
               ],
             ),
 

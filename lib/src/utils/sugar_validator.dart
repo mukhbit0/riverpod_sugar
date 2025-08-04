@@ -152,7 +152,12 @@ class SugarValidator {
   static void validateProviderType<T>(String operation) {
     final type = T.toString();
 
-    final intOperations = ['increment', 'decrement', 'addValue', 'subtractValue'];
+    final intOperations = [
+      'increment',
+      'decrement',
+      'addValue',
+      'subtractValue'
+    ];
     final boolOperations = ['toggle', 'setTrue', 'setFalse'];
     final listOperations = ['addItem', 'removeItem', 'addItems', 'clearAll'];
 

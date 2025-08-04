@@ -47,15 +47,19 @@ class HomeScreen extends RxWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('🔥 Enhanced Ref Syntax Options:',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
                     Text('Traditional: ${ref.watchValue(counter)}'),
-                    Text('Enhanced call: ${counter.ref(ref)}'),        // Call operator
-                    Text('Enhanced text: ${counter.ref.text(ref)}'),   // Text method
-                    counter.ref.textWidget(ref,                        // Direct widget
-                        style: const TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
+                    Text('Enhanced call: ${counter.ref(ref)}'), // Call operator
+                    Text(
+                        'Enhanced text: ${counter.ref.text(ref)}'), // Text method
+                    counter.ref.textWidget(ref, // Direct widget
+                        style: const TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
-                    Text('Name with ref: ${name.ref(ref)}'),           // Enhanced ref syntax
+                    Text(
+                        'Name with ref: ${name.ref(ref)}'), // Enhanced ref syntax
                   ],
                 ),
               ),
@@ -128,17 +132,17 @@ class HomeScreen extends RxWidget {
 
             // Conditional widget - use showEither instead of removed showWhen
             ref.showEither(
-                isDark,
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text('Dark mode is ON!',
-                      style: TextStyle(color: Colors.white)),
+              isDark,
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                const SizedBox.shrink(), // Empty widget when false
+                child: const Text('Dark mode is ON!',
+                    style: TextStyle(color: Colors.white)),
+              ),
+              const SizedBox.shrink(), // Empty widget when false
             ),
 
             const SizedBox(height: 20),
@@ -173,7 +177,7 @@ class HomeScreen extends RxWidget {
             // Display count using standard Dart methods
             Text('Total todos: ${ref.watchValue(todos).length}',
                 style: const TextStyle(fontWeight: FontWeight.bold)),
-            
+
             // Show enhanced ref syntax for accessing list length
             Text('Enhanced ref count: ${todos.ref(ref).length}',
                 style: TextStyle(color: Colors.green.shade700)),
@@ -234,10 +238,12 @@ class FlexibilityExamples extends RxWidget {
               children: [
                 const Text('🔥 Enhanced Ref Syntax Examples:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Price (traditional): \$${ref.watchValue(price).toStringAsFixed(2)}'),
+                Text(
+                    'Price (traditional): \$${ref.watchValue(price).toStringAsFixed(2)}'),
                 Text('Rating text: ${rating.ref.text(ref)}'),
-                temperature.ref.textWidget(ref, 
-                    style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                temperature.ref.textWidget(ref,
+                    style: const TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold)),
                 Text('Online status: ${isOnline.ref.text(ref)}'),
               ],
             ),
@@ -258,7 +264,9 @@ class FlexibilityExamples extends RxWidget {
             ...List.generate(
                 5,
                 (index) => Icon(
-                      index < ref.watchValue(rating) // Traditional for comparisons
+                      index <
+                              ref.watchValue(
+                                  rating) // Traditional for comparisons
                           ? Icons.star
                           : Icons.star_border,
                       color: Colors.amber,
@@ -270,9 +278,10 @@ class FlexibilityExamples extends RxWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: ref.watchValue(temperature) > 25 // Traditional for comparisons
-                ? Colors.red.shade100
-                : Colors.blue.shade100,
+            color:
+                ref.watchValue(temperature) > 25 // Traditional for comparisons
+                    ? Colors.red.shade100
+                    : Colors.blue.shade100,
             borderRadius: BorderRadius.circular(4),
           ),
           child: Text('${ref.watchValue(temperature)}°C'),
