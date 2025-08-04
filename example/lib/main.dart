@@ -38,9 +38,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Riverpod Sugar Example',
-      home: HomeScreen(),
+      navigatorKey: SugarNavigation.navigatorKey, // Enable Navigation Sugar
+      home: const HomeScreen(),
     );
   }
 }
@@ -146,17 +147,28 @@ class HomeScreen extends RxWidget {
 
               // Navigation to detailed demo
               ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RefSyntaxDemo()),
-                  );
-                },
+                onPressed: () => ref.pushPage(const RefSyntaxDemo()),
                 icon: const Icon(Icons.rocket_launch),
                 label: const Text('🚀 See Complete Ref Syntax Demo'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Navigation Sugar Demo
+              ElevatedButton.icon(
+                onPressed: () => ref.showSnackBar(
+                  'Navigation Sugar Demo: Use ref.pushPage(), ref.pop(), ref.showBottomSheet() etc!',
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                ),
+                icon: const Icon(Icons.navigation),
+                label: const Text('🚀 Navigation Sugar Demo'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.all(16),
                 ),

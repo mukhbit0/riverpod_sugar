@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2025-08-05
+
+### 🚀 **Navigation Sugar - Revolutionary Navigation**
+
+**Making navigation with state management incredibly simple**: Comprehensive navigation helpers that work seamlessly with Riverpod providers.
+
+**🎯 Core Navigation Methods**:
+```dart
+// Push pages with automatic state access
+ref.pushPage(UserProfilePage());
+final result = await ref.pushPageWithResult<String>(EditPage());
+
+// Pop with data
+ref.pop();
+ref.popWithData('Success!');
+ref.popToRoot();
+
+// Replace and clear navigation
+ref.pushReplacement(LoginPage());
+ref.pushAndClearAll(HomePage());
+```
+
+**🎨 Custom Transitions**:
+```dart
+// Built-in transition presets
+ref.pushPageWithTransition(page, NavigationTransitions.slideFromBottom);
+ref.pushPageWithTransition(page, NavigationTransitions.fade);
+ref.pushPageWithTransition(page, NavigationTransitions.scale);
+```
+
+**📱 Modal Helpers**:
+```dart
+// Bottom sheets and dialogs
+ref.showBottomSheet(SettingsSheet(), isScrollControlled: true);
+ref.showCustomDialog(ConfirmDialog());
+ref.showSnackBar('Success!', backgroundColor: Colors.green);
+```
+
+**⚡ Widget Extensions**:
+```dart
+// Alternative syntax - widgets can navigate themselves
+UserProfilePage().push(ref);
+SettingsSheet().showAsBottomSheet(ref);
+ConfirmDialog().showAsDialog(ref);
+HomePage().pushAndClearAll(ref);
+```
+
+**🔧 Setup**:
+```dart
+// Simply add to your MaterialApp
+MaterialApp(
+  navigatorKey: SugarNavigation.navigatorKey,  // Enable Navigation Sugar
+  home: HomePage(),
+)
+```
+
+**Key Features**:
+- ✨ **Ultra-concise navigation** - `ref.pushPage()` vs verbose Navigator.push()
+- 🎯 **State management integration** - Full provider access in navigation methods
+- 🎨 **Built-in transitions** - Slide, fade, scale animations ready to use
+- 📱 **Modal helpers** - Bottom sheets, dialogs, snack bars with one line
+- ⚡ **Widget extensions** - Alternative syntax for fluent navigation
+- 🔧 **Simple setup** - Just one line in MaterialApp to enable everything
+
+**Perfect for modern Flutter apps**: Eliminates navigation boilerplate while maintaining full flexibility!
+
 ## [1.0.6] - 2025-08-05
 
 ### 🧹 **Major API Cleanup & Simplification**

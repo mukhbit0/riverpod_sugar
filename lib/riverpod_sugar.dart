@@ -65,6 +65,9 @@ export 'src/utils/sugar_validation.dart';
 // Ultra-concise extensions - ScreenUtil style (.r, .sp, .w, .h)
 export 'src/extensions/sugar_extensions.dart';
 
+// Navigation helpers - Make routing with state management simple
+export 'src/navigation/navigation_sugar.dart';
+
 // Examples and showcase (for documentation and testing)
 export 'src/examples/sugar_showcase.dart';
 
