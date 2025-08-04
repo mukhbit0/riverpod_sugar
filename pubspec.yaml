@@ -1,6 +1,6 @@
 name: riverpod_sugar
 description: Revolutionary ScreenUtil-style extensions for Riverpod. Simplify state management with concise one-liners and flexible widgets.
-version: 1.0.5
+version: 1.0.6
 repository: https://github.com/mukhbit0/riverpod_sugar
 issue_tracker: https://github.com/mukhbit0/riverpod_sugar/issues
 documentation: https://github.com/mukhbit0/riverpod_sugar#readme

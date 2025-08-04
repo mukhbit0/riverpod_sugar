@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 // import removed: flutter_riverpod is re-exported by riverpod_sugar
 import 'package:riverpod_sugar/riverpod_sugar.dart';
+import 'ref_syntax_demo.dart';
 
-// --- Providers ---
+// --- Providers using Enhanced Sugar Syntax ---
 
-/// Simple counter provider for demonstration
+/// Ultra-concise provider creation using extension syntax
+final counter = 0.state;                    // Creates StateProvider<int>
+final userName = "Guest".text;              // Creates StateProvider<String>
+final isDarkMode = false.toggle;            // Creates StateProvider<bool>
+
+/// Traditional provider for comparison
 final counterProvider = StateProvider((ref) => 0);
 
 /// Async provider to demonstrate easyWhen usage
@@ -53,7 +59,11 @@ class HomeScreen extends RxWidget {
     final debouncer = Debouncer(milliseconds: 500);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Riverpod Sugar')),
+      appBar: AppBar(
+        title: const Text('🔥 Riverpod Sugar Demo'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -61,7 +71,90 @@ class HomeScreen extends RxWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. RxBuilder Example
+              // Enhanced Syntax Showcase Header
+              Card(
+                color: Colors.deepPurple.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const Text(
+                        '✨ Enhanced Ref Syntax Demo',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      // Showcase multiple syntax options
+                      Text('Counter: ${counter.ref.text(ref)}',  // Using text method
+                          style: const TextStyle(fontSize: 18)),
+                      Text('User: ${userName.ref(ref)}',         // Using call operator
+                          style: const TextStyle(fontSize: 18)),
+                      counter.ref.textWidget(ref,                // Direct widget method
+                          style: const TextStyle(color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 16)),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Enhanced Syntax Controls
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => counter.increment(ref),    // Extension method
+                    child: const Text('+ Increment'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => counter.decrement(ref),    // Extension method
+                    child: const Text('- Decrement'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => counter.ref.set(ref, 0),   // Enhanced ref syntax
+                    child: const Text('Reset'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Traditional comparison for education
+              Card(
+                color: Colors.grey.shade100,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const Text('📱 Traditional Riverpod vs 🔥 Sugar Syntax:',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      const Text('Traditional: ref.watch(counterProvider)'),
+                      Text('Sugar: counter.ref(ref) or counter.ref.text(ref)',
+                          style: TextStyle(color: Colors.green.shade700, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Navigation to detailed demo
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RefSyntaxDemo()),
+                  );
+                },
+                icon: const Icon(Icons.rocket_launch),
+                label: const Text('🚀 See Complete Ref Syntax Demo'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 1. RxBuilder Example (keep for compatibility)
               const Text('RxBuilder Example:', textAlign: TextAlign.center),
               RxBuilder(
                 builder: (context, ref) {
@@ -82,27 +175,26 @@ class HomeScreen extends RxWidget {
                   ),
               const SizedBox(height: 20),
 
-              // 3. Debouncer Example
-              const Text('Debouncer Utility:', textAlign: TextAlign.center),
+              // 3. Debouncer Example with enhanced syntax
+              const Text('Debouncer + Enhanced Syntax:', textAlign: TextAlign.center),
               TextField(
-                decoration: const InputDecoration(labelText: 'Search...'),
+                decoration: const InputDecoration(labelText: 'Update username...'),
                 onChanged: (value) {
                   debouncer.run(() {
-                    ref.read(searchQueryProvider.notifier).state = value;
+                    userName.ref.set(ref, value);  // Using enhanced syntax!
                   });
                 },
               ),
-              RxBuilder(builder: (context, ref) {
-                final query = ref.watch(searchQueryProvider);
-                return Text('Debounced Query: $query',
-                    textAlign: TextAlign.center);
-              }),
+              const SizedBox(height: 8),
+              Text('Live Username: ${userName.ref(ref)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(counterProvider.notifier).state++,
+        onPressed: () => counter.increment(ref),  // Using extension method
         child: const Icon(Icons.add),
       ),
     );

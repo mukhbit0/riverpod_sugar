@@ -82,6 +82,53 @@ extension StateProviderSugar<T> on StateProvider<T> {
   /// Watch the value one-liner (for widgets)
   /// Usage: `final count = counterProvider.watch(ref);`
   T watch(WidgetRef ref) => ref.watch(this);
+
+  /// Enhanced ref-style access for more intuitive syntax
+  /// Usage: `final count = counterProvider.ref.watch(ref);` or `counterProvider.ref.set(ref, value);`
+  StateProviderRefAccess<T> get ref => StateProviderRefAccess<T>(this);
+}
+
+/// Helper class to provide ref-style access to StateProvider operations
+/// This enables syntax like: `counterProvider.ref.watch(ref)` and `nameProvider.ref.set(ref, "value")`
+class StateProviderRefAccess<T> {
+  final StateProvider<T> _provider;
+  
+  /// Creates a StateProviderRefAccess for the given provider
+  const StateProviderRefAccess(this._provider);
+  
+  /// Watch the provider value - rebuilds only widgets that call this
+  /// Usage: `final count = counterProvider.ref.watch(ref);`
+  T watch(WidgetRef ref) => ref.watch(_provider);
+  
+  /// Read the provider value once - no rebuilding
+  /// Usage: `final currentCount = counterProvider.ref.read(ref);`
+  T read(WidgetRef ref) => ref.read(_provider);
+  
+  /// Update the provider value
+  /// Usage: `counterProvider.ref.set(ref, 42);`
+  void set(WidgetRef ref, T value) => ref.read(_provider.notifier).state = value;
+  
+  /// Get direct access to the notifier
+  /// Usage: `counterProvider.ref.notifier(ref).state = newValue;`
+  StateController<T> notifier(WidgetRef ref) => ref.read(_provider.notifier);
+
+  /// Create a Text widget directly from the provider
+  /// Usage: `Text(counterProvider.ref.text(ref))` or `counterProvider.ref.textWidget(ref)`
+  String text(WidgetRef ref) => '${ref.watch(_provider)}';
+  
+  /// Create a Text widget directly - most concise option
+  /// Usage: `counterProvider.ref.textWidget(ref)` 
+  Widget textWidget(WidgetRef ref, {TextStyle? style, TextAlign? textAlign}) {
+    return Text(
+      '${ref.watch(_provider)}',
+      style: style,
+      textAlign: textAlign,
+    );
+  }
+
+  /// Call operator for ultra-concise syntax
+  /// Usage: `Text('${counterProvider.ref(ref)}')` - shortest possible!
+  String call(WidgetRef ref) => '${ref.watch(_provider)}';
 }
 
 /// Extension on StateProvider&lt;int&gt; for integer operations
@@ -116,13 +163,7 @@ extension IntProviderSugar on StateProvider<int> {
     ref.read(notifier).state -= value;
   }
 
-  /// Multiply the current integer by a value
-  /// Usage: `multiplierProvider.multiplyBy(ref, 2);`
-  void multiplyBy(WidgetRef ref, int value) {
-    SugarPerformance.trackOperation('multiplyBy');
-    SugarDebugger.validateOperation('multiplyBy', value);
-    ref.read(notifier).state *= value;
-  }
+
 
   /// Reset the integer to 0
   /// Usage: `counterProvider.resetToZero(ref);` or `scoreProvider.resetToZero(ref);`
@@ -152,23 +193,7 @@ extension DoubleProviderSugar on StateProvider<double> {
   void subtractValue(WidgetRef ref, double value) =>
       ref.read(notifier).state -= value;
 
-  /// Multiply the current double by a value
-  /// Usage: `priceProvider.multiplyBy(ref, 1.2);`
-  void multiplyBy(WidgetRef ref, double value) =>
-      ref.read(notifier).state *= value;
 
-  /// Divide the current double by a value
-  /// Usage: `totalProvider.divideBy(ref, 2.0);`
-  void divideBy(WidgetRef ref, double value) =>
-      ref.read(notifier).state /= value;
-
-  /// Round to a specific number of decimal places
-  /// Usage: `priceProvider.roundTo(ref, 2);` // Rounds to 2 decimal places
-  void roundTo(WidgetRef ref, int decimalPlaces) {
-    final multiplier = 1.0 * (10 * decimalPlaces);
-    ref.read(notifier).state =
-        (ref.read(notifier).state * multiplier).round() / multiplier;
-  }
 
   /// Reset the double to 0.0
   /// Usage: `priceProvider.resetToZero(ref);`
@@ -216,15 +241,7 @@ extension StringProviderSugar on StateProvider<String> {
   void appendText(WidgetRef ref, String text) =>
       ref.read(notifier).state += text;
 
-  /// Prepend text to the current value
-  /// Usage: `prefixProvider.prependText(ref, "Mr. ");` or `urlProvider.prependText(ref, "https://");`
-  void prependText(WidgetRef ref, String text) =>
-      ref.read(notifier).state = text + ref.read(notifier).state;
 
-  /// Replace part of the text
-  /// Usage: `contentProvider.replaceText(ref, "old", "new");`
-  void replaceText(WidgetRef ref, String from, String to) =>
-      ref.read(notifier).state = ref.read(notifier).state.replaceAll(from, to);
 
   /// Set to a specific text value
   /// Usage: `statusProvider.setValue(ref, "completed");`
@@ -295,17 +312,7 @@ extension ListProviderSugar<T> on StateProvider<List<T>> {
   void replaceWith(WidgetRef ref, List<T> newList) =>
       ref.read(notifier).state = newList;
 
-  /// Get the current length of the list
-  /// Usage: `final count = todosProvider.getLength(ref);`
-  int getLength(WidgetRef ref) => ref.read(this).length;
 
-  /// Check if the list is empty
-  /// Usage: `final isEmpty = listProvider.isEmpty(ref);`
-  bool isEmpty(WidgetRef ref) => ref.read(this).isEmpty;
-
-  /// Check if the list is not empty
-  /// Usage: `final hasItems = listProvider.isNotEmpty(ref);`
-  bool isNotEmpty(WidgetRef ref) => ref.read(this).isNotEmpty;
 }
 
 /// Extension on WidgetRef for enhanced state watching and management
@@ -318,16 +325,9 @@ extension WidgetRefSugar on WidgetRef {
   /// Usage: `final currentCount = ref.readValue(counterProvider);` - Use for one-time access
   T readValue<T>(StateProvider<T> provider) => read(provider);
 
-  /// Update any StateProvider with a new value
-  /// Usage: `ref.updateValue(counterProvider, 10);` - Works with any StateProvider
-  void updateValue<T>(StateProvider<T> provider, T value) =>
-      read(provider.notifier).state = value;
 
-  /// Watch a boolean provider and conditionally show a widget
-  /// Usage: `ref.showWhen(visibleProvider, MyWidget())` - Full flexibility for any widget
-  Widget showWhen(StateProvider<bool> provider, Widget child) {
-    return watch(provider) ? child : const SizedBox.shrink();
-  }
+
+
 
   /// Watch a boolean provider and show different widgets based on true/false
   /// Usage: `ref.showEither(darkModeProvider, DarkWidget(), LightWidget())`
@@ -361,7 +361,7 @@ extension WidgetRefSugar on WidgetRef {
       subtitle: subtitle != null ? Text(subtitle) : null,
       secondary: leading,
       value: watch(provider),
-      onChanged: (value) => updateValue(provider, value),
+      onChanged: (value) => read(provider.notifier).state = value,
     );
   }
 
@@ -372,14 +372,13 @@ extension WidgetRefSugar on WidgetRef {
     required String title,
     String? subtitle,
     Widget? leading,
-    bool? secondary,
   }) {
     return CheckboxListTile(
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle) : null,
       secondary: leading,
       value: watch(provider),
-      onChanged: (value) => updateValue(provider, value ?? false),
+      onChanged: (value) => read(provider.notifier).state = value ?? false,
     );
   }
 
@@ -391,44 +390,17 @@ extension WidgetRefSugar on WidgetRef {
     Color? color,
     double? strokeWidth,
   }) {
-    return showWhen(
-      provider,
-      SizedBox(
-        width: size,
-        height: size,
-        child: CircularProgressIndicator(
-          color: color,
-          strokeWidth: strokeWidth ?? 4.0,
-        ),
-      ),
-    );
+    return watch(provider) 
+        ? SizedBox(
+            width: size,
+            height: size,
+            child: CircularProgressIndicator(
+              color: color,
+              strokeWidth: strokeWidth ?? 4.0,
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }
 
-/// Global convenience class for instant provider creation with descriptive names
-class Sugar {
-  /// Create an integer provider instantly
-  /// Usage: `final counter = Sugar.integer(0);` or `final age = Sugar.integer(25);`
-  static StateProvider<int> integer([int initial = 0]) =>
-      StateProvider((ref) => initial);
 
-  /// Create a text provider instantly
-  /// Usage: `final name = Sugar.text('John');` or `final title = Sugar.text('');`
-  static StateProvider<String> text([String initial = '']) =>
-      StateProvider((ref) => initial);
-
-  /// Create a boolean provider instantly
-  /// Usage: `final isDark = Sugar.boolean(false);` or `final isEnabled = Sugar.boolean(true);`
-  static StateProvider<bool> boolean([bool initial = false]) =>
-      StateProvider((ref) => initial);
-
-  /// Create a double provider instantly
-  /// Usage: `final price = Sugar.decimal(19.99);` or `final rating = Sugar.decimal(4.5);`
-  static StateProvider<double> decimal([double initial = 0.0]) =>
-      StateProvider((ref) => initial);
-
-  /// Create a list provider instantly
-  /// Usage: `final todos = Sugar.list&lt;Todo&gt;();` or `final numbers = Sugar.list&lt;int&gt;([1, 2, 3]);`
-  static StateProvider<List<T>> list<T>([List<T>? initial]) =>
-      StateProvider((ref) => initial ?? <T>[]);
-}

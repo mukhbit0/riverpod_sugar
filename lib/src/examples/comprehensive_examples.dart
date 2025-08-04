@@ -41,21 +41,21 @@ class ProviderCreationExamples {
   /// Search provider example
   static final searchQuery = ''.search;
 
-  // Alternative using Sugar class methods
-  /// User age using Sugar class
-  static final userAge = Sugar.integer(25);
+  // Alternative using extension syntax (preferred)
+  /// User age using extension
+  static final userAge = 25.state;
 
-  /// User name using Sugar class
-  static final userName = Sugar.text('John Doe');
+  /// User name using extension
+  static final userName = 'John Doe'.text;
 
-  /// Online status using Sugar class
-  static final isOnline = Sugar.boolean(true);
+  /// Online status using extension
+  static final isOnline = true.active;
 
-  /// Temperature using Sugar class
-  static final temperature = Sugar.decimal(22.5);
+  /// Temperature using extension
+  static final temperature = 22.5.price;
 
-  /// Shopping list using Sugar class
-  static final shoppingList = Sugar.list<String>();
+  /// Shopping list using extension
+  static final shoppingList = <String>[].items;
 }
 
 // =============================================================================
@@ -181,8 +181,8 @@ class ConditionalRenderingExample extends RxWidget {
 
             const SizedBox(height: 16),
 
-            // Using ref.showWhen
-            ref.showWhen(
+            // Using ref.showEither
+            ref.showEither(
               ProviderCreationExamples.isDarkMode,
               Container(
                 padding: const EdgeInsets.all(16),
@@ -192,6 +192,15 @@ class ConditionalRenderingExample extends RxWidget {
                 ),
                 child: const Text('Dark mode is enabled!',
                     style: TextStyle(color: Colors.white)),
+              ),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.yellow[100],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text('Light mode is enabled!',
+                    style: TextStyle(color: Colors.black)),
               ),
             ),
 
@@ -634,7 +643,7 @@ class UserProfileWidget extends RxWidget {
         child: Column(
           children: [
             // User info section
-            ref.showWhen(
+            ref.showEither(
               UserStateProviders.isLoggedIn,
               Column(
                 children: [
@@ -644,6 +653,8 @@ class UserProfileWidget extends RxWidget {
                   ref.text(UserStateProviders.email),
                 ],
               ),
+              const Text('Please log in',
+                  style: TextStyle(color: Colors.grey)),
             ),
 
             // Login/logout button

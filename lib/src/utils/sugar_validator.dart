@@ -68,7 +68,7 @@ class SugarValidator {
         throw RangeError(
           '🍯 Sugar Error: Index $item is out of range for list of length ${list.length}.\n'
           '💡 Valid range: 0 to ${list.length - 1}\n'
-          '   Use .isEmpty(ref) or .getLength(ref) to check list bounds.',
+          '   Use ref.watchValue(listProvider).length to check list bounds.',
         );
       }
     }
@@ -78,7 +78,7 @@ class SugarValidator {
         throw RangeError(
           '🍯 Sugar Error: Insert index $item is out of range for list of length ${list.length}.\n'
           '💡 Valid range: 0 to ${list.length}\n'
-          '   Use .getLength(ref) to check current list size.',
+          '   Use ref.watchValue(listProvider).length to check current list size.',
         );
       }
     }
@@ -86,7 +86,7 @@ class SugarValidator {
 
   /// Validate text operations
   static void validateTextOperation(String? text, String operation) {
-    if (operation == 'appendText' || operation == 'prependText') {
+    if (operation == 'appendText') {
       if (text == null) {
         throw ArgumentError(
           '🍯 Sugar Error: Cannot $operation with null text.\n'
@@ -152,13 +152,7 @@ class SugarValidator {
   static void validateProviderType<T>(String operation) {
     final type = T.toString();
 
-    final intOperations = [
-      'increment',
-      'decrement',
-      'addValue',
-      'subtractValue',
-      'multiplyBy'
-    ];
+    final intOperations = ['increment', 'decrement', 'addValue', 'subtractValue'];
     final boolOperations = ['toggle', 'setTrue', 'setFalse'];
     final listOperations = ['addItem', 'removeItem', 'addItems', 'clearAll'];
 

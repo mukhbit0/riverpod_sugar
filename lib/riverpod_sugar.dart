@@ -17,9 +17,9 @@
 ///
 /// ```dart
 /// // Create providers instantly
-/// final counter = 0.state;           // or Sugar.counter(0)
-/// final name = "John".text;          // or Sugar.text("John")
-/// final isDark = false.toggle;       // or Sugar.toggle(false)
+/// final counter = 0.state;           // StateProvider<int>
+/// final name = "John".text;          // StateProvider<String>
+/// final isDark = false.toggle;       // StateProvider<bool>
 ///
 /// // Use in widgets - no boilerplate!
 /// class MyWidget extends RxWidget {
@@ -30,7 +30,7 @@
 ///       Text('${ref.watchValue(counter)}'),   // Your own design!
 ///       ElevatedButton(onPressed: () => counter.increment(ref), child: Text('+')),
 ///       Text('${ref.watchValue(name)}'),      // Full flexibility!
-///       ref.showWhen(isDark, MyWidget()),     // Conditional widget
+///       ref.showEither(isDark, DarkWidget(), LightWidget()),     // Conditional widget
 ///     ]);
 ///   }
 /// }

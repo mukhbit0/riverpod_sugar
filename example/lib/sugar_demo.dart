@@ -38,6 +38,30 @@ class HomeScreen extends RxWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // 🔥 Enhanced Ref Syntax Demo Section
+            Card(
+              color: Colors.deepPurple.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('🔥 Enhanced Ref Syntax Options:',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    Text('Traditional: ${ref.watchValue(counter)}'),
+                    Text('Enhanced call: ${counter.ref(ref)}'),        // Call operator
+                    Text('Enhanced text: ${counter.ref.text(ref)}'),   // Text method
+                    counter.ref.textWidget(ref,                        // Direct widget
+                        style: const TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Text('Name with ref: ${name.ref(ref)}'),           // Enhanced ref syntax
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
             // Display counter with full flexibility - you can use it anywhere!
             Text('Counter: ${ref.watchValue(counter)}',
                 style: const TextStyle(fontSize: 24)),
@@ -71,7 +95,7 @@ class HomeScreen extends RxWidget {
                 labelText: 'Your name',
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) => name.updateText(ref, value),
+              onChanged: (value) => name.setValue(ref, value),
             ),
             const SizedBox(height: 10),
 
@@ -102,8 +126,8 @@ class HomeScreen extends RxWidget {
 
             const SizedBox(height: 20),
 
-            // Conditional widget - use anywhere with any widget
-            ref.showWhen(
+            // Conditional widget - use showEither instead of removed showWhen
+            ref.showEither(
                 isDark,
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -113,17 +137,19 @@ class HomeScreen extends RxWidget {
                   ),
                   child: const Text('Dark mode is ON!',
                       style: TextStyle(color: Colors.white)),
-                )),
+                ),
+                const SizedBox.shrink(), // Empty widget when false
+            ),
 
             const SizedBox(height: 20),
 
-            // Todo functionality with full control
+            // Todo functionality with enhanced ref syntax
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     decoration: const InputDecoration(
-                      labelText: 'Add todo',
+                      labelText: 'Add todo (using enhanced ref)',
                       border: OutlineInputBorder(),
                     ),
                     onSubmitted: (value) {
@@ -144,18 +170,22 @@ class HomeScreen extends RxWidget {
 
             const SizedBox(height: 10),
 
-            // Display count with your own styling
-            Text('Total todos: ${todos.getLength(ref)}',
+            // Display count using standard Dart methods
+            Text('Total todos: ${ref.watchValue(todos).length}',
                 style: const TextStyle(fontWeight: FontWeight.bold)),
+            
+            // Show enhanced ref syntax for accessing list length
+            Text('Enhanced ref count: ${todos.ref(ref).length}',
+                style: TextStyle(color: Colors.green.shade700)),
 
             const SizedBox(height: 10),
 
-            // List display with full control over design
+            // List display with enhanced ref syntax options
             Expanded(
               child: ListView.builder(
-                itemCount: ref.watchValue(todos).length,
+                itemCount: todos.ref(ref).length, // Using enhanced ref syntax!
                 itemBuilder: (context, index) {
-                  final todo = ref.watchValue(todos)[index];
+                  final todo = todos.ref(ref)[index]; // Enhanced ref access
                   return Card(
                     child: ListTile(
                       title: Text(todo),
@@ -179,7 +209,7 @@ class HomeScreen extends RxWidget {
   }
 }
 
-/// More examples showing the flexibility and freedom
+/// More examples showing enhanced ref syntax and flexibility
 class FlexibilityExamples extends RxWidget {
   const FlexibilityExamples({super.key});
 
@@ -194,8 +224,29 @@ class FlexibilityExamples extends RxWidget {
 
     return Column(
       children: [
+        // Enhanced ref syntax showcase
+        Card(
+          color: Colors.orange.shade50,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('🔥 Enhanced Ref Syntax Examples:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Price (traditional): \$${ref.watchValue(price).toStringAsFixed(2)}'),
+                Text('Rating text: ${rating.ref.text(ref)}'),
+                temperature.ref.textWidget(ref, 
+                    style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                Text('Online status: ${isOnline.ref.text(ref)}'),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
         // Use the values anywhere you need them
-        if (ref.watchValue(loading))
+        if (ref.watchValue(loading)) // Traditional approach for booleans
           const CircularProgressIndicator()
         else
           Text('Price: \$${ref.watchValue(price).toStringAsFixed(2)}'),
@@ -207,7 +258,7 @@ class FlexibilityExamples extends RxWidget {
             ...List.generate(
                 5,
                 (index) => Icon(
-                      index < ref.watchValue(rating)
+                      index < ref.watchValue(rating) // Traditional for comparisons
                           ? Icons.star
                           : Icons.star_border,
                       color: Colors.amber,
@@ -219,7 +270,7 @@ class FlexibilityExamples extends RxWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: ref.watchValue(temperature) > 25
+            color: ref.watchValue(temperature) > 25 // Traditional for comparisons
                 ? Colors.red.shade100
                 : Colors.blue.shade100,
             borderRadius: BorderRadius.circular(4),
@@ -227,7 +278,7 @@ class FlexibilityExamples extends RxWidget {
           child: Text('${ref.watchValue(temperature)}°C'),
         ),
 
-        // Control buttons - full freedom to design
+        // Control buttons - enhanced ref syntax for updates
         Wrap(
           spacing: 8,
           children: [
@@ -255,7 +306,7 @@ class FlexibilityExamples extends RxWidget {
           ],
         ),
 
-        // Status indicator - use boolean anywhere
+        // Status indicator - using showEither instead of removed methods
         ref.showEither(
           isOnline,
           const Chip(

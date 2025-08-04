@@ -231,7 +231,10 @@ class MyApp extends RxWidget {
     return Column(children: [
       Text('${ref.watchValue(counter)}'),          // FULL DESIGN FREEDOM!
       Text('${ref.watchValue(name)}'),             // YOUR OWN STYLING!
-      ref.showWhen(isDark, const Icon(Icons.dark_mode)), // FLEXIBLE CONDITIONAL!
+      ref.showEither(isDark, 
+        const Icon(Icons.dark_mode), 
+        const Icon(Icons.light_mode)
+      ), // FLEXIBLE CONDITIONAL!
       ElevatedButton(
         onPressed: () => counter.increment(ref),   // DESCRIPTIVE METHOD!
         child: const Text('Increment'),

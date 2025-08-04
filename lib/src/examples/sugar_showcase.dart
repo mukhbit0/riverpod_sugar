@@ -20,9 +20,8 @@ final isLoading = false.loading;
 /// Volume control provider (using .price for any double)
 final volume = 50.0.price; // Using .price for any double
 
-/// Color selection provider using Sugar class
-final selectedColor =
-    Sugar.list<Color>([Colors.blue, Colors.red, Colors.green]);
+/// Color selection provider using extension syntax
+final selectedColor = <Color>[Colors.blue, Colors.red, Colors.green].collection;
 
 /// Notifications enabled provider
 final notifications = true.enabled;
@@ -66,7 +65,7 @@ class SugarShowcase extends RxWidget {
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold)),
                 ref.text(userName, style: const TextStyle(fontSize: 18)),
-                ref.showWhen(isLoading, const CircularProgressIndicator()),
+                ref.showEither(isLoading, const CircularProgressIndicator(), const SizedBox.shrink()),
               ],
             ),
 
@@ -118,7 +117,7 @@ class SugarShowcase extends RxWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text('Total todos: ${todos.getLength(ref)}'),
+                Text('Total todos: ${ref.watchValue(todos).length}'),
                 ...ref.watchValue(todos).asMap().entries.map((entry) {
                   final index = entry.key;
                   final todo = entry.value;

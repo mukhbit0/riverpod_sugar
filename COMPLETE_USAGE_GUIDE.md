@@ -1,6 +1,9 @@
 # 📖 **Riverpod Sugar: Complete Usage Guide**
 
-This guide shows you exactly how to use every feature of Riverpod Sugar with full freedom and flexibility.
+This guide shows you exactly how topoints.addValue(ref, 50);         // Add 50
+points.subtractValue(ref, 10);      // Subtract 10
+points.resetToZero(ref);            // Set to 0
+points.setValue(ref, 1000);         // Set specific valueevery feature of Riverpod Sugar with full freedom and flexibility.
 
 ## 🎯 **Philosophy: Full Freedom, Not Restrictions**
 
@@ -24,6 +27,26 @@ final name = "Guest".text;         // StateProvider<String>
 final isDark = false.toggle;       // StateProvider<bool>
 final todos = <String>[].items;    // StateProvider<List<String>>
 final price = 19.99.price;         // StateProvider<double>
+```
+
+### **🔥 Enhanced Ref Syntax**
+
+Ultra-concise provider access with multiple syntax options:
+
+```dart
+// Traditional approach
+final count = ref.watchValue(counter);
+Text('Count: ${ref.watchValue(counter)}');
+
+// ✨ Enhanced ref syntax - choose your style!
+final count1 = counter.ref.watch(ref);         // Descriptive
+final count2 = counter.ref.read(ref);          // One-time read  
+Text('Count: ${counter.ref.text(ref)}');       // Text method
+Text('User: ${userName.ref(ref)}');            // Call operator - shortest!
+counter.ref.textWidget(ref, style: myStyle);   // Direct widget
+
+// Set values with enhanced syntax
+counter.ref.set(ref, 42);                     // Clean syntax
 ```
 
 ### **All Available Creation Extensions**
@@ -60,12 +83,12 @@ final results = <String>[].data;          // StateProvider<List<String>>
 ### **Alternative: Sugar Class Methods**
 
 ```dart
-// If you prefer explicit methods
-final counter = Sugar.integer(0);
-final name = Sugar.text("Guest");
-final isDark = Sugar.boolean(false);
-final price = Sugar.decimal(19.99);
-final todos = Sugar.list<String>();
+// Extension syntax (recommended)
+final counter = 0.state;
+final name = "Guest".text;
+final isDark = false.toggle;
+final price = 19.99.price;
+final todos = <String>[].items;
 ```
 
 ---
@@ -84,12 +107,18 @@ points.increment(ref);              // +1
 points.decrement(ref);              // -1
 points.addValue(ref, 50);           // Add 50
 points.subtractValue(ref, 10);      // Subtract 10
-points.multiplyBy(ref, 2);          // Multiply by 2
 points.resetToZero(ref);            // Set to 0
 points.setValue(ref, 1000);         // Set specific value
 
-// Use in your own UI designs
-Text('Points: ${ref.watchValue(points)}');
+// 🔥 Enhanced ref syntax options
+Text('Points: ${points.ref.text(ref)}');           // Descriptive method
+Text('Level: ${level.ref(ref)}');                  // Call operator (shortest)
+points.ref.textWidget(ref,                         // Direct widget
+    style: TextStyle(color: Colors.blue, fontSize: 18));
+
+// Traditional approach still works
+Text('Health: ${ref.watchValue(health)}');
+
 ElevatedButton(
   onPressed: () => points.addValue(ref, 100),
   child: Text('Earn Points'),
@@ -106,9 +135,6 @@ final temperature = 23.5.price;
 // Mathematical operations
 price.addValue(ref, 5.0);           // Add 5.0
 price.subtractValue(ref, 2.50);     // Subtract 2.50
-price.multiplyBy(ref, 1.2);         // Apply 20% increase
-price.divideBy(ref, 2.0);           // Divide by 2
-price.roundTo(ref, 2);              // Round to 2 decimals
 price.resetToZero(ref);             // Set to 0.0
 price.setValue(ref, 24.99);         // Set specific value
 
@@ -155,8 +181,6 @@ final log = "".text;
 message.updateText(ref, "New message");     // Replace text
 message.clearText(ref);                     // Clear to ""
 message.appendText(ref, " World!");         // Add to end
-message.prependText(ref, "Mr. ");           // Add to beginning
-message.replaceText(ref, "old", "new");     // Replace substring
 message.setValue(ref, "Final text");        // Set specific value
 
 // Use in your UI
@@ -183,10 +207,10 @@ todos.updateAt(ref, 0, "Updated task");     // Update at index
 todos.clearAll(ref);                        // Clear all items
 todos.replaceWith(ref, newList);            // Replace entire list
 
-// Get information
-final count = todos.getLength(ref);         // Get length
-final isEmpty = todos.isEmpty(ref);         // Check if empty
-final hasItems = todos.isNotEmpty(ref);     // Check if has items
+// Get information (using standard Dart methods)
+final count = ref.watchValue(todos).length; // Get length
+final isEmpty = ref.watchValue(todos).isEmpty; // Check if empty
+final hasItems = ref.watchValue(todos).isNotEmpty; // Check if has items
 
 // Use in any list UI
 ListView.builder(
@@ -256,21 +280,23 @@ void handleButtonPress() {
 ### **Direct Value Updates**
 
 ```dart
-// Update any provider directly
-ref.updateValue(counterProvider, 42);
-ref.updateValue(nameProvider, "John Doe");
-ref.updateValue(darkModeProvider, true);
+// Update providers using their methods (no generic updateValue needed)
+counter.setValue(ref, 42);
+name.updateText(ref, "John Doe");
+darkMode.setValue(ref, true);
 ```
 
 ### **Conditional Widget Display**
 
 ```dart
-// Show widget when boolean is true
-ref.showWhen(isLoadingProvider, 
-  CustomLoadingSpinner(),  // Your own loading design
+// Show different widgets based on boolean state
+ref.showEither(
+  isLoadingProvider,
+  CustomLoadingSpinner(),  // When true
+  ContentWidget(),         // When false
 );
 
-// Show different widgets based on boolean
+// Multiple conditions with different widgets
 ref.showEither(
   isDarkModeProvider,
   MyDarkThemeWidget(),     // When true
@@ -563,7 +589,7 @@ class SearchWidget extends RxWidget {
       onChanged: (query) {
         debouncer.run(() {
           // This will only execute after user stops typing for 300ms
-          ref.updateValue(searchQueryProvider, query);
+          searchQuery.updateText(ref, query);
         });
       },
     );
