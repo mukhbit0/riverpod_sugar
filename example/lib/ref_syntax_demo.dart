@@ -6,8 +6,8 @@ import 'package:riverpod_sugar/riverpod_sugar.dart';
 
 // Create providers using extension syntax
 final counter = 0.state;
-final userName = "Guest".text;
-final message = "Hello".text;
+final userName = "Guest".state;
+final message = "Hello".state;
 
 class RefSyntaxDemo extends RxWidget {
   const RefSyntaxDemo({super.key});

@@ -3,15 +3,16 @@
 [![pub package](https://img.shields.io/pub/v/riverpod_sugar.svg)](https://pub.dev/packages/riverpod_sugar)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**The sweetest way to use Riverpod!** A collection of lightweight widgets, utilities, and revolutionary ScreenUtil-style extensions that dramatically reduce boilerplate and improve developer ergonomics when using `flutter_riverpod`.
+**The sweetest way to use Riverpod!** A collection of lightweight widgets, utilities, and revolutionary extensions that dramatically reduce boilerplate and improve developer ergonomics when using `flutter_riverpod`.
 
-## 🚀 **REVOLUTIONARY: ScreenUtil-Style One-Liners!**
+## 🚀 **REVOLUTIONARY: The `.state` Extension**
 
-Just like ScreenUtil made responsive design simple with `.w`, `.h`, `.r`, `.sp` - **Riverpod Sugar** makes state management simple with `.state`, `.text`, `.toggle`!
+**Riverpod Sugar** makes state management simple with a single, unified extension: **`.state`**.
 
 ### **Before vs After**
 
-**Traditional Riverpod** (20+ lines for simple counter):
+**Traditional Riverpod** (20+ lines for a simple counter):
+
 ```dart
 final counterProvider = StateProvider<int>((ref) => 0);
 
@@ -26,7 +27,7 @@ class CounterWidget extends ConsumerWidget {
         Text('$count'),
         ElevatedButton(
           onPressed: () => ref.read(counterProvider.notifier).state++,
-          child: Text('Increment'),
+          child: const Text('Increment'),
         ),
       ],
     );
@@ -34,189 +35,131 @@ class CounterWidget extends ConsumerWidget {
 }
 ```
 
-**With Sugar Extensions** (5 lines for same functionality):
+**With a single `.state` extension** (5 lines for the same result):
+
 ```dart
-final counter = 0.state;              // ONE WORD!
+final counter = 0.state; // ONE WORD!
 
 class CounterWidget extends RxWidget {
+  @override
   Widget buildRx(context, ref) => Column(children: [
-    Text('${ref.watchValue(counter)}'),  // Your design freedom!
-    ElevatedButton(onPressed: () => counter.increment(ref), child: Text('+')),
+    Text('${ref.watch(counter)}'),
+    ElevatedButton(onPressed: () => counter.increment(ref), child: const Text('+')),
   ]);
 }
 ```
 
-## 🔥 **Enhanced Ref Syntax - Multiple Options!**
-
-**Choose your preferred syntax** - all of these work and do the same thing:
-
-```dart
-final counter = 0.state;
-final userName = "Guest".text;
-
-// Option 1: Traditional approach
-Text('Count: ${ref.watchValue(counter)}')
-
-// Option 2: Enhanced ref syntax with descriptive method
-Text('Count: ${counter.ref.text(ref)}')
-
-// Option 3: Enhanced ref syntax with call operator (shortest!)
-Text('User: ${userName.ref(ref)}')
-
-// Option 4: Direct widget creation
-counter.ref.textWidget(ref, style: TextStyle(color: Colors.blue))
-
-// All access methods available:
-final value = counter.ref.watch(ref);     // Watch with rebuilds
-final value = counter.ref.read(ref);      // Read once, no rebuilds  
-counter.ref.set(ref, 42);                 // Set new value
-```
-
-**Why this is revolutionary:**
-- 🎯 **Multiple syntax options** - choose what feels natural
-- ⚡ **Ultra-concise** - `counter.ref(ref)` vs `ref.watch(counterProvider)`
-- 🔧 **Consistent API** - `.watch()`, `.read()`, `.set()` work the same across all providers
-- 💡 **IntelliSense friendly** - autocomplete guides you to the right method
-
 ## ✨ **Complete Feature Set**
 
-### 🎯 **Core Features**
-- **🔥 ScreenUtil-Style Extensions**: `.state`, `.text`, `.toggle`, `.items` - Create providers instantly!
-- **⚡ RxWidget Family**: Drop-in replacements for ConsumerWidget with cleaner syntax
-- **🎭 easyWhen**: Simplified async state handling with default loading/error states
-- **📝 FormManager**: Complete form validation state management with built-in validators
-- **⏱️ Advanced Debouncer**: Prevent rapid state updates with customizable strategies
-- **🔗 Provider Combiners**: Combine multiple providers elegantly with intelligent error handling
-- **🧩 Utility Widgets**: RxBuilder, RxShow, and more for common patterns
-- **🚀 Navigation Sugar**: Ultra-concise navigation with state management integration
+- **🔥 Unified `.state` Extension**: Create a `StateProvider` for `int`, `String`, `bool`, `List`, `Color`, `ThemeData`, `Map`, `DateTime`, `Enum`, all controllers, and more with a single, consistent extension.
+- **⚡ RxWidget Family**: Drop-in replacements for `ConsumerWidget` with cleaner syntax.
+- **🎭 easyWhen**: Simplified async state handling with default loading/error states.
+- **🚀 Advanced Provider Extensions**: Powerful manipulation methods for all supported types (e.g., `myColor.brighten(ref)`, `myList.add(ref, item)`).
+- **🧩 Utility Widgets**: `RxBuilder`, `RxShow`, and more for common UI patterns.
 
-### 🚀 **Navigation Sugar - Revolutionary Navigation (v1.0.7+)**
+---
 
-Make navigation with state management incredibly simple:
+### 🔥 **The `.state` Extension - The Game Changer**
+
+Create providers instantly with a unified and consistent syntax. The power comes from your variable name, not a confusing set of extensions.
 
 ```dart
-// Setup in MaterialApp (one line!)
-MaterialApp(navigatorKey: SugarNavigation.navigatorKey, ...)
-
-// Ultra-concise navigation
-ref.pushPage(UserProfilePage());             // Push page
-final result = await ref.pushPageWithResult<String>(EditPage());
-
-// Smart pop methods
-ref.pop();                                   // Go back
-ref.popWithData('Success!');                 // Return data
-ref.popToRoot();                             // Back to first page
-
-// Advanced navigation
-ref.pushReplacement(LoginPage());            // Replace current
-ref.pushAndClearAll(HomePage());             // Clear all and push
-
-// Modal helpers
-ref.showBottomSheet(SettingsSheet());        // Bottom sheet
-ref.showCustomDialog(ConfirmDialog());       // Dialog
-ref.showSnackBar('Done!', backgroundColor: Colors.green);
-
-// Custom transitions
-ref.pushPageWithTransition(page, NavigationTransitions.slideFromBottom);
-
-// Widget extensions - alternative syntax
-UserProfilePage().push(ref);                // Widget navigates itself
-SettingsSheet().showAsBottomSheet(ref);      // Fluent API
-```
-
-### 🔥 **Sugar Extensions - The Game Changer**
-
-Create providers instantly with ScreenUtil-style syntax:
-
-```dart
-// Create providers in ONE WORD
+// Create providers in ONE WORD for any type
 final counter = 0.state;           // StateProvider<int>
-final name = "John".text;          // StateProvider<String>  
-final isDark = false.toggle;       // StateProvider<bool>
-final todos = <String>[].items;    // StateProvider<List<String>>
-final price = 19.99.price;         // StateProvider<double>
+final userName = "John".state;     // StateProvider<String>  
+final isDarkMode = false.state;    // StateProvider<bool>
+final userList = <String>[].state; // StateProvider<List<String>>
+final progress = 0.75.state;       // StateProvider<double>
+final selectedDate = DateTime.now().state; // StateProvider<DateTime>
 
-// Update state in ONE LINE with clear descriptive names
-counter.increment(ref);           // Increment by 1
-counter.decrement(ref);           // Decrement by 1
-counter.addValue(ref, 5);         // Add specific value
-counter.resetToZero(ref);         // Reset to 0
-
-name.updateText(ref, "Jane");     // Update text
-name.clearText(ref);              // Clear text
-name.appendText(ref, " Doe");     // Append text
-
-isDark.toggle(ref);               // Toggle boolean
-isDark.setTrue(ref);              // Set to true
-isDark.setFalse(ref);             // Set to false
-
-todos.addItem(ref, "New task");   // Add item to list
-todos.removeItem(ref, "Old task"); // Remove specific item
-todos.clearAll(ref);              // Clear entire list
-
-// Display widgets in ONE LINE
-ref.text(counter);                // Text widget showing count
-ref.switchTile(isDark, title: "Dark Mode"); // Switch widget
-ref.loading(isLoading);           // Conditional loading indicator
+// Update state in ONE LINE with clear, descriptive names
+counter.increment(ref);
+userName.update((_) => "Jane");
+isDarkMode.toggle(ref);
+userList.add(ref, "New User");
 ```
 
-### � **Enhanced Ref Syntax**
+### 🎨 **Advanced Provider Extensions**
 
-Ultra-concise provider access with multiple syntax options:
+Instantly create and manage providers for complex Flutter types with zero boilerplate.
 
 ```dart
-// Traditional approach
-Text('Count: ${ref.watchValue(counter)}')
+// 🎨 Color providers with smart state management
+final primaryColor = Colors.blue.state;
+primaryColor.brighten(ref, 0.2);                 // Brighten color
+primaryColor.darken(ref, 0.1);                   // Darken color
+final hex = primaryColor.hexString(ref);         // Get hex string
 
-// ✨ Enhanced ref syntax (NEW!)
-Text('Count: ${counter.ref.text(ref)}')        // Descriptive method
-Text('User: ${userName.ref(ref)}')             // Call operator - shortest!
-counter.ref.textWidget(ref, style: myStyle)    // Direct widget
+// 🎭 ThemeData providers
+final appTheme = ThemeData.light().state;
+appTheme.switchToDark(ref);                      // Switch to dark theme
+final brightness = appTheme.brightness(ref);     // Get brightness
 
-// Choose your preferred style - all do the same thing!
-final value1 = ref.watchValue(counter);        // Traditional
-final value2 = counter.ref.watch(ref);         // Enhanced
-final value3 = counter.ref.read(ref);          // One-time read
+// 🎮 Controller providers
+final pageController = PageController().state;
+pageController.nextPage(ref);                    // Go to next page
+
+final textController = TextEditingController().state;
+textController.setText(ref, 'New text');         // Set text
+
+final scrollController = ScrollController().state;
+scrollController.scrollToTop(ref);               // Scroll to top
+
+// 📋 List providers with standard Dart methods
+final todoItems = <String>[].state;
+todoItems.add(ref, 'New task');                  // Add item
+todoItems.remove(ref, 'Old task');               // Remove item
+todoItems.update(ref, 0, 'Updated Task');        // Update at index
+todoItems.clear(ref);                            // Clear all
+
+// 🗺️ Map providers with type safety
+final userSettings = <String, dynamic>{}.state;
+userSettings.setValue(ref, 'theme', 'dark');     // Set key-value
+final theme = userSettings.getValue(ref, 'theme'); // Get value by key
+userSettings.removeKey(ref, 'oldSetting');       // Remove by key
+
+// 📅 DateTime & TimeOfDay providers
+final selectedDate = DateTime.now().state;
+selectedDate.addDays(ref, 7);                    // Add a week
+final formatted = selectedDate.formatDate(ref);  // "2025-08-06"
+
+final selectedTime = TimeOfDay.now().state;
+selectedTime.addMinutes(ref, -30);               // Go back 30 min
+final formatted = selectedTime.formatTime(ref);  // "14:30"
+
+// And many more: Set, FocusNode, Locale, Enum...
 ```
 
-Build UI components directly from providers with intelligent defaults:
+### 🔥 **Concise Provider Access with `.ref`**
+
+After creating a provider with `.state`, you can access its value with the ultra-concise `.ref` syntax. It's designed to be brief, readable, and powerful.
+
+**Choose your style:**
 
 ```dart
-// Text and display widgets
-ref.text(counter, style: TextStyle(fontSize: 24));    // Text from any provider
-ref.loading(isLoadingProvider, size: 24);             // Loading indicator
+// Traditional Riverpod - still works!
+final count = ref.watch(counter);
+final name = ref.watch(userName);
 
-// Interactive controls
-ref.switchTile(isDarkMode, title: "Dark Mode", subtitle: "Toggle theme");
-ref.checkboxTile(agreeTerms, title: "I agree to terms");
+// Concise `.ref` syntax - shorter and cleaner!
+final count = counter.ref.watch(ref); // Explicit `watch`
+final name = userName.ref(ref);       // Even shorter with call operator `()`!
 
-// Conditional display
-ref.showEither(isDarkMode, DarkWidget(), LightWidget()); // Smart conditionals
+// Update state
+counter.ref.set(ref, 10);
 
-// All helpers include smart defaults and intuitive behavior!
+// Read once without watching
+final currentCount = counter.ref.read(ref);
 ```
 
-### 🐛 **Advanced Debugging & Validation (v1.0.3+)**
-
-Production-ready debugging and validation tools:
+**The `.ref` syntax also brings back convenient helpers:**
 
 ```dart
-// Automatic performance tracking (debug mode only)
-SugarPerformance.track('my-operation', () {
-  counter.increment(ref);
-});
+// Get the value as a String
+final countString = counter.ref.text(ref); // "10"
 
-// Safe operations with validation
-listProvider.safeAddItem(ref, newItem, maxLength: 100);
-textProvider.safeUpdateText(ref, newText, minLength: 3);
-
-// Enhanced error messages with suggestions
-try {
-  listProvider.removeAt(ref, invalidIndex);
-} catch (e) {
-  // Gets helpful error: "Index 5 is out of bounds for list of length 3. 
-  // Suggestion: Use safeRemoveAt() or check list length first."
-}
+// Get the value directly as a Text widget
+final countWidget = counter.ref.textWidget(ref, style: myStyle);
 ```
 
 ## 🚀 **Quick Start**
@@ -224,9 +167,10 @@ try {
 ### 1. **Installation**
 
 Add to your `pubspec.yaml`:
+
 ```yaml
 dependencies:
-  riverpod_sugar: ^1.0.4
+  riverpod_sugar: ^1.1.0
 ```
 
 ### 2. **Import and Use**
@@ -234,20 +178,23 @@ dependencies:
 ```dart
 import 'package:riverpod_sugar/riverpod_sugar.dart';
 
-// Create providers instantly (ScreenUtil style!)
+// Create providers instantly with the .state extension
 final counter = 0.state;
-final name = "Anonymous".text;
-final isDark = false.toggle;
+final name = "Anonymous".state;
+final isDark = false.state;
 
-// Use clean RxWidget syntax
+// Use the clean RxWidget for your UI
 class MyApp extends RxWidget {
   @override
   Widget buildRx(BuildContext context, WidgetRef ref) {
     return Column(children: [
-      ref.counter(counter),                    // Show counter
-      ElevatedButton(onPressed: () => counter.increment(ref), child: Text('+')),
-      ref.txt(name),                          // Show text
-      ref.show(isDark, Icon(Icons.dark_mode)), // Conditional widget
+      Text('Counter: ${ref.watch(counter)}'),
+      ElevatedButton(onPressed: () => counter.increment(ref), child: const Text('+')),
+      Text('Name: ${ref.watch(name)}'),
+      Switch(
+        value: ref.watch(isDark),
+        onChanged: (_) => isDark.toggle(ref),
+      ),
     ]);
   }
 }
@@ -261,9 +208,10 @@ You now have ultra-concise state management that's 80% less code than traditiona
 
 ### 🎯 **RxWidget Family - Clean Syntax**
 
-Replace verbose ConsumerWidget with clean RxWidget:
+Replace verbose `ConsumerWidget` with the clean `RxWidget`:
 
 **Before (Standard Riverpod):**
+
 ```dart
 class CounterWidget extends ConsumerWidget {
   const CounterWidget({super.key});
@@ -277,26 +225,28 @@ class CounterWidget extends ConsumerWidget {
 ```
 
 **After (With RxWidget):**
+
 ```dart
 class CounterWidget extends RxWidget {
   @override
   Widget buildRx(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(counterProvider);
+    final count = ref.watch(counter); // Use the provider directly
     return Text('Count: $count');
   }
 }
 ```
 
-| Widget | Use Case |
-|--------|----------|
-| `RxWidget` | Replaces `ConsumerWidget` with cleaner syntax |
-| `RxStatefulWidget` | Replaces `ConsumerStatefulWidget` |
-| `RxBuilder` | Inline reactive widgets without creating new classes |
-| `RxShow` | Conditional rendering based on provider state |
+| Widget           | Use Case                                                     |
+| ---------------- | ------------------------------------------------------------ |
+| `RxWidget`         | Replaces `ConsumerWidget` with cleaner `buildRx` syntax.     |
+| `RxStatefulWidget` | Replaces `ConsumerStatefulWidget`.                           |
+| `RxBuilder`        | Inline reactive widgets without creating new classes.        |
+| `RxShow`           | Conditional rendering based on a boolean provider's state. |
 
 ### 🎭 **easyWhen - Simplified AsyncValue Handling**
 
 **Before (Standard Riverpod):**
+
 ```dart
 ref.watch(userProvider).when(
   data: (user) => Text('Hello ${user.name}!'),
@@ -306,10 +256,11 @@ ref.watch(userProvider).when(
 ```
 
 **After (With easyWhen):**
+
 ```dart
 ref.watch(userProvider).easyWhen(
   data: (user) => Text('Hello ${user.name}!'),
-  // loading & error widgets provided automatically!
+  // loading & error widgets are provided automatically!
 )
 ```
 
@@ -426,20 +377,37 @@ final advancedDebouncer = AdvancedDebouncer(
 ```dart
 // Numbers
 final counter = 0.state;           // StateProvider<int>
-final price = 19.99.price;         // StateProvider<double>
+final price = 19.99.state;         // StateProvider<double>
 
 // Strings  
-final name = "John".text;          // StateProvider<String>
-final query = "".search;           // StateProvider<String>
+final name = "John".state;          // StateProvider<String>
+final query = "".state;           // StateProvider<String>
 
 // Booleans
-final isDark = false.toggle;       // StateProvider<bool>
-final isLoading = false.loading;   // StateProvider<bool>
-final isVisible = true.visible;    // StateProvider<bool>
+final isDark = false.state;       // StateProvider<bool>
+final isLoading = false.state;   // StateProvider<bool>
+final isVisible = true.state;    // StateProvider<bool>
 
 // Lists
-final todos = <String>[].items;    // StateProvider<List<String>>
-final tasks = <Task>[].todos;      // StateProvider<List<Task>>
+final todos = <String>[].state;    // StateProvider<List<String>>
+final tasks = <Task>[].state;      // StateProvider<List<Task>>
+
+// Colors & Themes
+final primaryColor = const Color(0xFF6750A4).state;      // StateProvider<Color>
+final accentColor = Colors.orange.state;                // StateProvider<Color>
+final currentTheme = ThemeData.light().state;            // StateProvider<ThemeData>
+
+// Controllers
+final pageController = PageController().state;           // StateProvider<PageController>
+final textController = TextEditingController().state; // StateProvider<TextEditingController>
+final scrollController = ScrollController().state;       // StateProvider<ScrollController>
+
+// Maps & Complex Types
+final configMap = <String, dynamic>{}.state;             // StateProvider<Map<String, dynamic>>
+final settingsMap = <String, bool>{}.state;           // StateProvider<Map<String, bool>>
+final duration = Duration(seconds: 2).state;             // StateProvider<Duration>
+final windowSize = Size(800, 600).state;                  // StateProvider<Size>
+final position = Offset.zero.state;                   // StateProvider<Offset>
 ```
 
 ### **Update State in One Line**
@@ -485,8 +453,8 @@ ref.switchTile(boolProvider, title: "Dark Mode"); // Switch widget
 ```dart
 // ✅ Excellent: Use Sugar extensions for instant providers
 final counter = 0.state;
-final name = "Guest".text;
-final isDark = false.toggle;
+final name = "Guest".state;
+final isDark = false.state;
 
 // ✅ Excellent: Use RxWidget for clean reactive widgets
 class UserProfile extends RxWidget {
@@ -581,7 +549,7 @@ final nameProvider = StateProvider<String>((ref) => "Guest");
 
 // After - One word!
 final counter = 0.state;
-final name = "Guest".text;
+final name = "Guest".state;
 ```
 
 **2. State Updates**
@@ -693,6 +661,7 @@ class MyWidget extends RxWidget {
 
 > **Perfect for teams moving to production!** Optimized package size with all the reliability and debugging tools you need for real-world apps.
 
+
 ## 🚀 **Why Choose Riverpod Sugar?**
 
 ### **🔥 Revolutionary Simplicity**
@@ -725,9 +694,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built on top of the excellent [flutter_riverpod](https://pub.dev/packages/flutter_riverpod) package
 - Inspired by [ScreenUtil](https://pub.dev/packages/flutter_screenutil)'s revolutionary approach to responsive design
 - Thanks to the Flutter community for feedback and contributions
-
----
-
-**Made with ❤️ for the Flutter community**
-
-*Transform your Riverpod experience today - because state management should be sweet, not complex!* 🍯

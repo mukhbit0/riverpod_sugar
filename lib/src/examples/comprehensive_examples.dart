@@ -15,47 +15,47 @@ class ProviderCreationExamples {
   static final counter = 0.state;
 
   /// String provider example
-  static final name = 'Guest'.text;
+  static final name = 'Guest'.state;
 
   /// Boolean provider example
-  static final isDarkMode = false.toggle;
+  static final isDarkMode = false.state;
 
   /// Double provider example
-  static final price = 19.99.price;
+  static final price = 19.99.state;
 
   /// List provider example
-  static final todos = <String>[].items;
+  static final todos = <String>[].state;
 
   /// Loading state example
-  static final isLoading = false.loading;
+  static final isLoading = false.state;
 
   /// Visibility state example
-  static final isVisible = true.visible;
+  static final isVisible = true.state;
 
   /// Enabled state example
-  static final isEnabled = true.enabled;
+  static final isEnabled = true.state;
 
   /// Active state example
-  static final isActive = false.active;
+  static final isActive = false.state;
 
   /// Search provider example
-  static final searchQuery = ''.search;
+  static final searchQuery = ''.state;
 
   // Alternative using extension syntax (preferred)
   /// User age using extension
   static final userAge = 25.state;
 
   /// User name using extension
-  static final userName = 'John Doe'.text;
+  static final userName = 'John Doe'.state;
 
   /// Online status using extension
-  static final isOnline = true.active;
+  static final isOnline = true.state;
 
   /// Temperature using extension
-  static final temperature = 22.5.price;
+  static final temperature = 22.5.state;
 
   /// Shopping list using extension
-  static final shoppingList = <String>[].items;
+  static final shoppingList = <String>[].state;
 }
 
 // =============================================================================
@@ -230,7 +230,6 @@ class TodoListExample extends RxWidget {
 
   @override
   Widget buildRx(BuildContext context, WidgetRef ref) {
-    final todos = ref.watchValue(ProviderCreationExamples.todos);
     final controller = TextEditingController();
 
     return Card(
@@ -255,7 +254,7 @@ class TodoListExample extends RxWidget {
                     ),
                     onSubmitted: (value) {
                       if (value.isNotEmpty) {
-                        ProviderCreationExamples.todos.addItem(ref, value);
+                        ProviderCreationExamples.todos.add(ref, value);
                         controller.clear();
                       }
                     },
@@ -266,84 +265,85 @@ class TodoListExample extends RxWidget {
                   onPressed: () {
                     final text = controller.text;
                     if (text.isNotEmpty) {
-                      ProviderCreationExamples.todos.addItem(ref, text);
+                      ProviderCreationExamples.todos.add(ref, text);
                       controller.clear();
                     }
                   },
-                  child: const Text('Add'),
+                  child: const Text('Add Todo'),
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
-            // Todo count and controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
               children: [
-                Text('Total todos: ${todos.length}',
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => ProviderCreationExamples.todos
-                          .addItems(ref, ['Sample 1', 'Sample 2', 'Sample 3']),
-                      child: const Text('Add Samples'),
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: todos.isNotEmpty
-                          ? () => ProviderCreationExamples.todos.clearAll(ref)
-                          : null,
-                      child: const Text('Clear All'),
-                    ),
-                  ],
+                ElevatedButton(
+                  onPressed: () => ProviderCreationExamples.todos
+                      .addAll(ref, ['Sample 1', 'Sample 2', 'Sample 3']),
+                  child: const Text('Add Sample Todos'),
+                ),
+                ElevatedButton(
+                  onPressed: ref.watch(ProviderCreationExamples.todos).isEmpty
+                      ? null
+                      : () => ProviderCreationExamples.todos.clear(ref),
+                  child: const Text('Clear Todos'),
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
-            // Todo list
-            if (todos.isEmpty)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Text('No todos yet. Add one above!',
-                      style: TextStyle(color: Colors.grey)),
-                ),
-              )
+            if (ref.watch(ProviderCreationExamples.todos).isEmpty)
+              const Text('No todos yet!')
             else
-              ...todos.asMap().entries.map((entry) {
+              ...ref
+                  .watch(ProviderCreationExamples.todos)
+                  .asMap()
+                  .entries
+                  .map((entry) {
                 final index = entry.key;
                 final todo = entry.value;
-
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 4),
-                  child: ListTile(
-                    title: Text(todo),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit, size: 20),
-                          onPressed: () {
-                            // Example of updating item at index
-                            ProviderCreationExamples.todos
-                                .updateAt(ref, index, '$todo (edited)');
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete,
-                              color: Colors.red, size: 20),
-                          onPressed: () => ProviderCreationExamples.todos
-                              .removeAt(ref, index),
-                        ),
-                      ],
-                    ),
+                return ListTile(
+                  title: Text(todo),
+                  leading: Text('${index + 1}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => ProviderCreationExamples.todos
+                            .update(ref, index, '$todo (edited)'),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () =>
+                            ProviderCreationExamples.todos.remove(ref, todo),
+                      ),
+                    ],
                   ),
                 );
               }),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ElevatedButton(
+                  onPressed: () =>
+                      ProviderCreationExamples.todos.removeAt(ref, 0),
+                  child: const Text('Remove First'),
+                ),
+                ElevatedButton(
+                  onPressed: () => ProviderCreationExamples.todos
+                      .removeWhere(ref, (item) => item.contains('Sample')),
+                  child: const Text("Remove 'Sample'"),
+                ),
+                ElevatedButton(
+                  onPressed: () =>
+                      ProviderCreationExamples.todos.toggle(ref, 'New Item'),
+                  child: const Text("Toggle 'New Item'"),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -573,46 +573,46 @@ class ComprehensiveSugarDemo extends RxWidget {
 /// User-related state providers organized in a class
 class UserStateProviders {
   /// User name provider
-  static final name = ''.text;
+  static final name = ''.state;
 
   /// User email provider
-  static final email = ''.text;
+  static final email = ''.state;
 
   /// Login status provider
-  static final isLoggedIn = false.toggle;
+  static final isLoggedIn = false.state;
 }
 
 /// App-level state providers
 class AppStateProviders {
   /// Dark mode theme provider
-  static final isDarkTheme = false.toggle;
+  static final isDarkTheme = false.state;
 
   /// Selected language provider
-  static final language = 'en'.text;
+  static final language = 'en'.state;
 
   /// Network status provider
-  static final isOnline = true.active;
+  static final isOnline = true.state;
 
   /// Notifications enabled provider
-  static final notificationsEnabled = true.enabled;
+  static final notificationsEnabled = true.state;
 }
 
 /// Form-related state providers
 class FormProviders {
   /// First name field provider
-  static final firstName = ''.text;
+  static final firstName = ''.state;
 
   /// Last name field provider
-  static final lastName = ''.text;
+  static final lastName = ''.state;
 
   /// Email field provider
-  static final email = ''.text;
+  static final email = ''.state;
 
   /// Form validation status provider
-  static final isValid = false.toggle;
+  static final isValid = false.state;
 
   /// Form submission status provider
-  static final isSubmitting = false.loading;
+  static final isSubmitting = false.state;
 }
 
 /// Validation utility for forms

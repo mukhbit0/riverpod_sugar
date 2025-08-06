@@ -16,7 +16,7 @@ void main() {
 
     group('Enhanced Widget Helpers', () {
       testWidgets('text helper creates proper Text widget', (tester) async {
-        final nameProvider = 'John'.text;
+        final nameProvider = 'John'.state;
 
         await tester.pumpWidget(
           ProviderScope(
@@ -40,7 +40,7 @@ void main() {
 
       testWidgets('switchTile helper creates functional switch',
           (tester) async {
-        final darkModeProvider = false.toggle;
+        final darkModeProvider = false.state;
         bool currentValue = false;
 
         await tester.pumpWidget(
@@ -105,7 +105,7 @@ void main() {
 
       testWidgets('loading helper shows/hides loading indicator',
           (tester) async {
-        final loadingProvider = false.loading;
+        final loadingProvider = false.state;
 
         await tester.pumpWidget(
           ProviderScope(
@@ -281,7 +281,7 @@ void main() {
       });
 
       testWidgets('safeUpdateText validates length', (tester) async {
-        final textProvider = ''.text;
+        final textProvider = ''.state;
 
         await tester.pumpWidget(
           ProviderScope(

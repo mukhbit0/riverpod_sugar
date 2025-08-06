@@ -9,28 +9,28 @@ import 'package:riverpod_sugar/riverpod_sugar.dart';
 final counter = 0.state;
 
 /// User name provider for demonstration
-final userName = 'Guest'.text;
+final userName = 'Guest'.state;
 
 /// Dark mode toggle provider
-final isDarkMode = false.toggle;
+final isDarkMode = false.state;
 
 /// Loading state provider
-final isLoading = false.loading;
+final isLoading = false.state;
 
-/// Volume control provider (using .price for any double)
-final volume = 50.0.price; // Using .price for any double
+/// Volume control provider (using .state for any double)
+final volume = 50.0.state; // Using .state for any double
 
 /// Color selection provider using extension syntax
-final selectedColor = <Color>[Colors.blue, Colors.red, Colors.green].collection;
+final selectedColor = <Color>[Colors.blue, Colors.red, Colors.green].state;
 
 /// Notifications enabled provider
-final notifications = true.enabled;
+final notifications = true.state;
 
 /// Todo list provider
-final todos = <String>[].items;
+final todos = <String>[].state;
 
 /// Rating provider
-final rating = 4.5.price;
+final rating = 4.5.state;
 
 /// Main showcase widget demonstrating all Sugar features
 class SugarShowcase extends RxWidget {
@@ -99,89 +99,42 @@ class SugarShowcase extends RxWidget {
                   children: [
                     Expanded(
                       child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Add todo',
-                          border: OutlineInputBorder(),
-                        ),
                         onSubmitted: (value) {
                           if (value.isNotEmpty) {
-                            todos.addItem(ref, value);
+                            todos.add(ref, value);
                           }
                         },
+                        decoration: const InputDecoration(
+                          hintText: 'Add a new todo...',
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
                     IconButton(
-                      onPressed: () => todos.clearAll(ref),
-                      icon: const Icon(Icons.clear_all),
+                      icon: const Icon(Icons.clear),
+                      onPressed: () => todos.clear(ref),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text('Total todos: ${ref.watchValue(todos).length}'),
-                ...ref.watchValue(todos).asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final todo = entry.value;
-                  return Card(
-                    child: ListTile(
-                      title: Text(todo),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => todos.removeAt(ref, index),
-                      ),
-                    ),
-                  );
-                }),
+                ...ref.watch(todos).map((todo) => ListTile(title: Text(todo))),
               ],
             ),
 
-            // Section 5: Advanced Features
+            // Section 5: Advanced Usage
             _buildSection(
-              title: '5. Advanced Features',
+              title: '5. Advanced Usage',
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Demonstrate batch updates
-                    counter.setValue(ref, 42);
-                    userName.updateText(ref, 'John Doe');
-                    rating.setValue(ref, 5.0);
-                    volume.setValue(ref, 75.0);
-                  },
-                  child: const Text('Batch Update All Values'),
+                Text('Volume: ${ref.watch(volume).toStringAsFixed(0)}'),
+                Slider(
+                  value: ref.watch(volume),
+                  min: 0,
+                  max: 100,
+                  onChanged: (value) => volume.set(ref, value),
                 ),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    // Reset all to defaults
-                    counter.resetToZero(ref);
-                    userName.updateText(ref, 'Guest');
-                    isDarkMode.setFalse(ref);
-                    isLoading.setFalse(ref);
-                    notifications.setTrue(ref);
-                    rating.setValue(ref, 4.5);
-                    volume.setValue(ref, 50.0);
-                    todos.clearAll(ref);
-                  },
-                  child: const Text('Reset All to Defaults'),
-                ),
-              ],
-            ),
-
-            // Section 6: Performance Demo
-            _buildSection(
-              title: '6. Performance Demo',
-              children: [
-                Text('Counter rebuilds: ${ref.watchValue(counter)}'),
-                ElevatedButton(
-                  onPressed: () {
-                    // Rapid updates to test performance
-                    for (int i = 0; i < 10; i++) {
-                      Future.delayed(Duration(milliseconds: i * 100), () {
-                        counter.increment(ref);
-                      });
-                    }
-                  },
-                  child: const Text('Rapid Counter Updates'),
+                Text('Rating: ${ref.watch(rating).toStringAsFixed(1)}'),
+                RatingBar(
+                  rating: ref.watch(rating),
+                  onRatingUpdate: (value) => rating.set(ref, value),
                 ),
               ],
             ),
@@ -189,165 +142,74 @@ class SugarShowcase extends RxWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => counter.increment(ref),
-        child: const Icon(Icons.add),
+        onPressed: () {
+          counter.increment(ref);
+          userName.set(ref, 'User ${ref.read(counter)}');
+          isLoading.toggle(ref);
+          Future.delayed(const Duration(seconds: 1), () {
+            isLoading.toggle(ref);
+          });
+        },
+        child: const Icon(Icons.play_arrow),
       ),
     );
   }
 
-  Widget _buildSection({
-    required String title,
-    required List<Widget> children,
-  }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
-            const SizedBox(height: 12),
-            ...children.map((child) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: child,
-                )),
-          ],
-        ),
+  Widget _buildSection(
+      {required String title, required List<Widget> children}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style:
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          ...children,
+          const Divider(height: 24),
+        ],
       ),
     );
   }
 }
 
-/// Example showcasing AsyncValue with Sugar
-class AsyncExampleWidget extends RxWidget {
-  /// Creates an async example widget
-  const AsyncExampleWidget({super.key});
+/// A simple rating bar widget for demonstration
+class RatingBar extends StatelessWidget {
+  /// The current rating
+  final double rating;
+
+  /// Callback when the rating is updated
+  final ValueChanged<double> onRatingUpdate;
+
+  /// Creates a rating bar
+  const RatingBar(
+      {super.key, required this.rating, required this.onRatingUpdate});
 
   @override
-  Widget buildRx(BuildContext context, WidgetRef ref) {
-    final userProvider = FutureProvider<String>((ref) async {
-      await Future.delayed(const Duration(seconds: 2));
-      return 'John Doe';
-    });
-
-    return ref.watch(userProvider).easyWhen(
-          data: (name) => Column(
-            children: [
-              Text('Welcome, $name!', style: const TextStyle(fontSize: 20)),
-            ],
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        return IconButton(
+          icon: Icon(
+            index < rating ? Icons.star : Icons.star_border,
+            color: Colors.amber,
           ),
-          loading: () => const Column(
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 8),
-              Text('Loading user...'),
-            ],
-          ),
-          error: (error, stack) => Column(
-            children: [
-              const Icon(Icons.error, color: Colors.red, size: 48),
-              Text('Error: $error'),
-            ],
-          ),
+          onPressed: () => onRatingUpdate(index + 1.0),
         );
-  }
-}
-
-/// Example showcasing form management with Sugar
-class FormExampleWidget extends RxWidget {
-  /// Creates a form example widget
-  const FormExampleWidget({super.key});
-
-  @override
-  Widget buildRx(BuildContext context, WidgetRef ref) {
-    final email = ''.text;
-    final password = ''.text;
-    final agreeToTerms = false.toggle;
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) => email.updateText(ref, value),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-              onChanged: (value) => password.updateText(ref, value),
-            ),
-            const SizedBox(height: 16),
-            ref.checkboxTile(agreeToTerms, title: 'I agree to the terms'),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: ref.watchValue(agreeToTerms) &&
-                      ref.watchValue(email).isNotEmpty &&
-                      ref.watchValue(password).isNotEmpty
-                  ? () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              'Form submitted for ${ref.watchValue(email)}'),
-                        ),
-                      );
-                    }
-                  : null,
-              child: const Text('Submit'),
-            ),
-          ],
-        ),
-      ),
+      }),
     );
   }
 }
 
-/// Example showcasing provider combinations
-class CombinedProviderExample extends RxWidget {
-  /// Creates a combined provider example widget
-  const CombinedProviderExample({super.key});
-
-  @override
-  Widget buildRx(BuildContext context, WidgetRef ref) {
-    // Combine multiple providers into one
-    final combinedProvider = Provider<String>((ref) {
-      final name = ref.watch(userName);
-      final count = ref.watch(counter);
-      final isDark = ref.watch(isDarkMode);
-
-      return '$name has clicked $count times in ${isDark ? 'dark' : 'light'} mode';
-    });
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const Text(
-              'Combined Provider Example:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(ref.watch(combinedProvider)),
-          ],
-        ),
+/// A simple showcase of all Sugar features
+void main() {
+  runApp(
+    const ProviderScope(
+      child: MaterialApp(
+        home: SugarShowcase(),
       ),
-    );
-  }
+    ),
+  );
 }

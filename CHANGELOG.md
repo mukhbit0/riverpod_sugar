@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-08-06
+
+### 🔥 **MAJOR REFACTORING: The `.state` Revolution**
+
+This version introduces a massive simplification and enhancement of the entire `riverpod_sugar` API. We've removed the confusing variety of extensions (`.text`, `.toggle`, `.items`, etc.) and replaced them with a single, universal, and powerful extension: **`.state`**.
+
+**🎯 Key Changes**:
+
+- **✨ Unified `.state` Extension**:
+  - **One Extension to Rule Them All**: Create a `StateProvider` for `int`, `String`, `bool`, `List`, `double`, `Set`, `Map`, `DateTime`, `TimeOfDay`, `Color`, `ThemeData`, `FocusNode`, `Locale`, `Enum`, and all common `Controller` types using the same `.state` syntax.
+  - **Example**: `0.state`, `"hello".state`, `false.state`, `<String>[].state`.
+
+- **🧹 Bloat Removal & API Simplification**:
+  - **❌ Removed**: `.text`, `.toggle`, `.items`, `.price`, `.search`, `.loading`, `.visible`, `.todos`, `.accent`, `.size`, `.position`, `.controller`, `.settings`. All are now replaced by `.state`.
+  - **❌ Removed**: All `ref.watchValue()` and `ref.text()` style helpers. Use the standard `ref.watch()` for consistency with Riverpod.
+  - **❌ Removed**: All `ref.counter()`, `ref.txt()`, `ref.show()` style widget helpers.
+  - **Result**: A cleaner, more intuitive, and consistent API that is easier to learn and use.
+
+- **🚀 New Advanced Provider Extensions**:
+  - **Added full support and manipulation methods for**:
+    - `Color`: `brighten()`, `darken()`, `hexString()`
+    - `ThemeData`: `switchToDark()`, `switchToLight()`, `brightness()`
+    - `List`: `add()`, `remove()`, `update()`, `clear()`, `addAll()`, `removeWhere()` (standard Dart method names)
+    - `Map`: `setValue()`, `getValue()`, `removeKey()`
+    - `Set`: `add()`, `remove()`, `toggle()`
+    - `DateTime`: `addDays()`, `formatDate()`
+    - `TimeOfDay`: `addMinutes()`, `formatTime()`
+    - `double`: Standard numeric operations.
+    - `Enum`: Type-safe state management.
+    - `Locale`: For internationalization.
+    - `FocusNode`: `requestFocus()`, `hasFocus()`
+    - All major controllers (`PageController`, `TextEditingController`, etc.) now use `.state` and have relevant manipulation methods.
+
+**Why the change?**
+The previous API, while concise, was becoming bloated with too many specific extensions. The new `.state` approach provides a single, memorable, and scalable way to create providers for any data type, aligning better with the core principles of simplicity and developer ergonomics.
+
 ## [1.0.7] - 2025-08-05
 
 ### 🚀 **Navigation Sugar - Revolutionary Navigation**
@@ -12,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Making navigation with state management incredibly simple**: Comprehensive navigation helpers that work seamlessly with Riverpod providers.
 
 **🎯 Core Navigation Methods**:
+
 ```dart
 // Push pages with automatic state access
 ref.pushPage(UserProfilePage());
@@ -28,6 +65,7 @@ ref.pushAndClearAll(HomePage());
 ```
 
 **🎨 Custom Transitions**:
+
 ```dart
 // Built-in transition presets
 ref.pushPageWithTransition(page, NavigationTransitions.slideFromBottom);
@@ -36,6 +74,7 @@ ref.pushPageWithTransition(page, NavigationTransitions.scale);
 ```
 
 **📱 Modal Helpers**:
+
 ```dart
 // Bottom sheets and dialogs
 ref.showBottomSheet(SettingsSheet(), isScrollControlled: true);
@@ -44,6 +83,7 @@ ref.showSnackBar('Success!', backgroundColor: Colors.green);
 ```
 
 **⚡ Widget Extensions**:
+
 ```dart
 // Alternative syntax - widgets can navigate themselves
 UserProfilePage().push(ref);
@@ -53,6 +93,7 @@ HomePage().pushAndClearAll(ref);
 ```
 
 **🔧 Setup**:
+
 ```dart
 // Simply add to your MaterialApp
 MaterialApp(
@@ -62,6 +103,7 @@ MaterialApp(
 ```
 
 **Key Features**:
+
 - ✨ **Ultra-concise navigation** - `ref.pushPage()` vs verbose Navigator.push()
 - 🎯 **State management integration** - Full provider access in navigation methods
 - 🎨 **Built-in transitions** - Slide, fade, scale animations ready to use
@@ -78,6 +120,7 @@ MaterialApp(
 **Comprehensive bloat removal**: Eliminated redundant, overly-specific, and ambiguous methods to create a focused, intuitive API.
 
 **✨ Enhanced Ref Syntax**: Introduced ultra-concise provider access with multiple syntax options:
+
 ```dart
 // Multiple syntax options - choose your style!
 Text('Count: ${counter.ref.text(ref)}');       // Descriptive method
@@ -389,51 +432,3 @@ These widget helpers remain because they solve genuine common problems:
 - **Platforms**: All Flutter platforms supported
 
 ---
-
-## Future Releases
-
-### [1.1.0] - Planned Features
-- `RxListView` - Reactive list widget with loading states
-- `RxAnimatedSwitcher` - Animated transitions between provider states  
-- Navigation helpers for provider-aware routing
-- Performance optimization widgets
-- Additional common validators
-
-### [1.2.0] - Advanced Features
-- DevTools integration for better debugging
-- Code generation macros for providers
-- Testing utilities and mock helpers
-- Advanced caching strategies
-- Background task management
-
----
-
-## Migration Notes
-
-### From flutter_riverpod to riverpod_sugar
-
-This package is designed to be a drop-in enhancement to flutter_riverpod:
-
-1. **No Breaking Changes**: All existing riverpod code continues to work
-2. **Gradual Adoption**: Migrate widgets one at a time
-3. **Zero Runtime Overhead**: Sugar syntax compiles to standard riverpod calls
-4. **Full Interoperability**: Mix and match with existing ConsumerWidget code
-
-### Version Compatibility
-
-| riverpod_sugar | flutter_riverpod | Flutter | Dart |
-|----------------|------------------|---------|------|
-| 1.0.0          | ^2.4.9          | >=3.10.0| >=3.0.0 |
-
----
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## Support
-
-- 📖 [Documentation](https://github.com/yourusername/riverpod_sugar#readme)
-- 🐛 [Issue Tracker](https://github.com/yourusername/riverpod_sugar/issues)
-- 💬 [Discussions](https://github.com/yourusername/riverpod_sugar/discussions)
-- 📧 [Email Support](mailto:support@yourpackage.com)

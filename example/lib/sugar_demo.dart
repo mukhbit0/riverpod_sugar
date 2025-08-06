@@ -6,9 +6,9 @@ import 'package:riverpod_sugar/riverpod_sugar.dart';
 
 // Create providers using the flexible extension syntax
 final counter = 0.state; // Integer provider
-final name = "Guest".text; // String provider
-final isDark = false.toggle; // Boolean provider
-final todos = <String>[].items; // List provider
+final name = "Guest".state; // String provider
+final isDark = false.state; // Boolean provider
+final todos = <String>[].state; // List provider
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -95,11 +95,15 @@ class HomeScreen extends RxWidget {
 
             // Text input - use your own TextField design
             TextField(
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  name.set(ref, value);
+                }
+              },
               decoration: const InputDecoration(
                 labelText: 'Your name',
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) => name.setValue(ref, value),
             ),
             const SizedBox(height: 10),
 
@@ -147,59 +151,38 @@ class HomeScreen extends RxWidget {
 
             const SizedBox(height: 20),
 
-            // Todo functionality with enhanced ref syntax
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Add todo (using enhanced ref)',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        todos.addItem(ref, value);
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(width: 10),
-                IconButton(
-                  onPressed: () => todos.clearAll(ref),
-                  icon: const Icon(Icons.clear_all),
-                  tooltip: 'Clear all todos',
-                ),
-              ],
+            // Todo list example
+            const SizedBox(height: 20),
+            const Text('Todo List', style: TextStyle(fontSize: 24)),
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Add a new todo',
+                border: OutlineInputBorder(),
+              ),
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  todos.add(ref, value);
+                }
+              },
             ),
-
             const SizedBox(height: 10),
-
-            // Display count using standard Dart methods
-            Text('Total todos: ${ref.watchValue(todos).length}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-
-            // Show enhanced ref syntax for accessing list length
-            Text('Enhanced ref count: ${todos.ref(ref).length}',
-                style: TextStyle(color: Colors.green.shade700)),
-
+            ElevatedButton(
+              onPressed: () => todos.clear(ref),
+              child: const Text('Clear All Todos'),
+            ),
             const SizedBox(height: 10),
-
-            // List display with enhanced ref syntax options
             Expanded(
-              child: ListView.builder(
-                itemCount: todos.ref(ref).length, // Using enhanced ref syntax!
-                itemBuilder: (context, index) {
-                  final todo = todos.ref(ref)[index]; // Enhanced ref access
-                  return Card(
-                    child: ListTile(
+              child: ListView(
+                children: [
+                  for (final todo in ref.watch(todos))
+                    ListTile(
                       title: Text(todo),
                       trailing: IconButton(
-                        onPressed: () => todos.removeItem(ref, todo),
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => todos.remove(ref, todo),
                       ),
                     ),
-                  );
-                },
+                ],
               ),
             ),
           ],
@@ -220,11 +203,11 @@ class FlexibilityExamples extends RxWidget {
   @override
   Widget buildRx(BuildContext context, WidgetRef ref) {
     // Create providers with meaningful names for your use case
-    final loading = false.loading;
-    final price = 19.99.price;
-    final rating = 4.5.price; // You can use .price for any double!
+    final loading = false.state;
+    final price = 19.99.state;
+    final rating = 4.5.state; // You can use .state for any double!
     final temperature = 23.state; // You can use .state for any int!
-    final isOnline = true.toggle; // You can use .toggle for any boolean!
+    final isOnline = true.state; // You can use .state for any boolean!
 
     return Column(
       children: [

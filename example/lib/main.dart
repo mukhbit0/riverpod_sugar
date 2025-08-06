@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 // import removed: flutter_riverpod is re-exported by riverpod_sugar
 import 'package:riverpod_sugar/riverpod_sugar.dart';
 import 'ref_syntax_demo.dart';
+import 'advanced_demo_app.dart';
 
 // --- Providers using Enhanced Sugar Syntax ---
 
 /// Ultra-concise provider creation using extension syntax
 final counter = 0.state; // Creates StateProvider<int>
-final userName = "Guest".text; // Creates StateProvider<String>
-final isDarkMode = false.toggle; // Creates StateProvider<bool>
+final userName = "Guest".state; // Creates StateProvider<String>
+final isDarkMode = false.state; // Creates StateProvider<bool>
 
 /// Traditional provider for comparison
 final counterProvider = StateProvider((ref) => 0);
@@ -212,6 +213,24 @@ class HomeScreen extends RxWidget {
               Text('Live Username: ${userName.ref(ref)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
+
+              const SizedBox(height: 30),
+
+              // Advanced Demo Button
+              ElevatedButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const AdvancedDemoApp()),
+                ),
+                icon: const Icon(Icons.rocket_launch),
+                label: const Text('🎨 Advanced Sugar Demo'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                ),
+              ),
             ],
           ),
         ),

@@ -19,54 +19,22 @@ extension NumberSugar on num {
 /// Extension on strings to create state providers instantly
 extension StringSugar on String {
   /// Creates a StateProvider with this string as initial value
-  /// Usage: `final nameProvider = "John".text;`
-  StateProvider<String> get text => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for search/query functionality
-  /// Usage: `final searchProvider = "".search;`
-  StateProvider<String> get search => StateProvider((ref) => this);
+  /// Usage: `final nameProvider = "John".state;`
+  StateProvider<String> get state => StateProvider((ref) => this);
 }
 
 /// Extension on booleans to create state providers instantly
 extension BooleanSugar on bool {
   /// Creates a StateProvider with this boolean as initial value
-  /// Usage: `final isDarkProvider = false.toggle;` or `final isEnabledProvider = true.enabled;`
-  StateProvider<bool> get toggle => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for loading states
-  /// Usage: `final loadingProvider = false.loading;`
-  StateProvider<bool> get loading => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for visibility states
-  /// Usage: `final visibleProvider = true.visible;`
-  StateProvider<bool> get visible => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for enabled/disabled states
-  /// Usage: `final enabledProvider = true.enabled;`
-  StateProvider<bool> get enabled => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for active/inactive states
-  /// Usage: `final activeProvider = false.active;`
-  StateProvider<bool> get active => StateProvider((ref) => this);
+  /// Usage: `final isDarkProvider = false.state;`
+  StateProvider<bool> get state => StateProvider((ref) => this);
 }
 
 /// Extension on lists to create state providers instantly
 extension ListSugar<T> on List<T> {
   /// Creates a StateProvider with this list as initial value
-  /// Usage: `final itemsProvider = &lt;String&gt;[].items;` or `final usersProvider = &lt;User&gt;[].collection;`
-  StateProvider<List<T>> get items => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for todo lists
-  /// Usage: `final todosProvider = &lt;Todo&gt;[].todos;`
-  StateProvider<List<T>> get todos => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for any collection
-  /// Usage: `final productsProvider = &lt;Product&gt;[].collection;`
-  StateProvider<List<T>> get collection => StateProvider((ref) => this);
-
-  /// Creates a StateProvider for a list of data
-  /// Usage: `final dataProvider = &lt;Map&gt;[].data;`
-  StateProvider<List<T>> get data => StateProvider((ref) => this);
+  /// Usage: `final itemsProvider = <String>[].state;`
+  StateProvider<List<T>> get state => StateProvider((ref) => this);
 }
 
 /// Extension on StateProvider for ultra-simple operations
