@@ -293,7 +293,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  riverpod_sugar: ^1.1.0
+  riverpod_sugar: ^1.0.9
 ```
 
 ### 2. **Import and Use**
