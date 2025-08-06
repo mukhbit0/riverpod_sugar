@@ -52,10 +52,63 @@ class CounterWidget extends RxWidget {
 ## ✨ **Complete Feature Set**
 
 - **🔥 Unified `.state` Extension**: Create a `StateProvider` for `int`, `String`, `bool`, `List`, `Color`, `ThemeData`, `Map`, `DateTime`, `Enum`, all controllers, and more with a single, consistent extension.
+- **⚡ Ultra-Simple Validation**: The shortest validation syntax in Flutter! Just 2 words: `"".emailState`, `"".passwordState`, `0.ageState`.
+- **🎯 Fluent Validation Builder**: Custom validation with readable syntax: `"".validationBuilder.contains('@')(null, 'error')`.
 - **⚡ RxWidget Family**: Drop-in replacements for `ConsumerWidget` with cleaner syntax.
 - **🎭 easyWhen**: Simplified async state handling with default loading/error states.
 - **🚀 Advanced Provider Extensions**: Powerful manipulation methods for all supported types (e.g., `myColor.brighten(ref)`, `myList.add(ref, item)`).
 - **🧩 Utility Widgets**: `RxBuilder`, `RxShow`, and more for common UI patterns.
+
+---
+
+## 🔥 **NEW: Ultra-Simple Validation (v1.0.9)**
+
+**The shortest validation syntax in Flutter!** Create validated state providers in just 2 words with built-in error handling.
+
+### **Instant Validation - Just 2 Words!**
+
+```dart
+// Ultra-short validated providers (shortest possible!)
+final email = "".emailState;        // Just 2 words!
+final password = "".passwordState;  // Just 2 words!
+final age = 0.ageState;             // Just 2 words!
+
+// Use in your UI with one-liner error handling
+TextField(
+  onChanged: (value) => email.set(ref, value),
+  decoration: InputDecoration(
+    labelText: 'Email',
+    errorText: email.errorMessage(ref), // One liner!
+  ),
+)
+
+// Check validation status
+if (email.isValid(ref) && password.isValid(ref)) {
+  // Form is valid - submit!
+}
+```
+
+### **Custom Fluent Validation**
+
+For power users who need custom validation rules:
+
+```dart
+// Fluent builder API with readable syntax
+final customEmail = "".validationBuilder
+    .contains('@')(null, 'Must contain @ symbol');
+
+final strongPassword = "".validationBuilder
+    .minLength(8)(null, 'Password must be at least 8 characters');
+
+final adultAge = 0.validationBuilder
+    .min(18)(null, 'Must be 18 or older');
+
+// Or completely custom validation
+final custom = "".validState((value) => 
+    value.length > 3 ? null : "Too short");
+```
+
+**📖 See [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) for comprehensive examples and advanced usage.**
 
 ---
 
@@ -129,6 +182,76 @@ final formatted = selectedTime.formatTime(ref);  // "14:30"
 
 // And many more: Set, FocusNode, Locale, Enum...
 ```
+
+### 🔥 **Ultra-Simple Validation - New in v1.0.9**
+
+**The shortest validation syntax in Flutter!** Create validated state providers with built-in error handling in just 2 words.
+
+```dart
+// 🔥 Ultra-short validated providers (shortest possible!)
+final email = "".emailState;        // Just 2 words - includes email validation!
+final password = "".passwordState;  // Just 2 words - includes password validation!
+final age = 0.ageState;             // Just 2 words - includes age validation!
+
+// 🎯 Custom fluent validation for power users
+final customEmail = "".validationBuilder
+    .contains('@')
+    .minLength(5)(null, 'Email must contain @ and be 5+ chars');
+
+final strongPassword = "".validationBuilder
+    .minLength(8)
+    .contains(RegExp(r'[A-Z]'))(null, 'Must be 8+ chars with uppercase');
+
+final adultAge = 0.validationBuilder
+    .min(18)
+    .max(120)(null, 'Age must be between 18-120');
+
+// 🛠️ Or completely custom validation function
+final custom = "".validState((value) => 
+    value.contains('@') && value.length > 5 
+        ? null 
+        : "Invalid email format");
+```
+
+**Using validation in your UI:**
+
+```dart
+class LoginForm extends RxWidget {
+  @override
+  Widget buildRx(BuildContext context, WidgetRef ref) {
+    final isFormValid = email.isValid(ref) && password.isValid(ref);
+    
+    return Column(children: [
+      // Email field with automatic error display
+      TextField(
+        onChanged: (value) => email.set(ref, value),
+        decoration: InputDecoration(
+          labelText: 'Email',
+          errorText: email.errorMessage(ref), // One liner!
+        ),
+      ),
+      
+      // Password field with automatic error display
+      TextField(
+        onChanged: (value) => password.set(ref, value),
+        obscureText: true,
+        decoration: InputDecoration(
+          labelText: 'Password',
+          errorText: password.errorMessage(ref), // One liner!
+        ),
+      ),
+      
+      // Submit button - automatically enabled/disabled
+      ElevatedButton(
+        onPressed: isFormValid ? () => submitForm(ref) : null,
+        child: const Text('Login'),
+      ),
+    ]);
+  }
+}
+```
+
+**📖 See [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) for complete validation documentation with advanced examples.**
 
 ### 🔥 **Concise Provider Access with `.ref`**
 

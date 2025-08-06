@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2025-08-07
+
+### 🔥 **NEW: Ultra-Simple Validation System**
+
+**The shortest validation syntax in Flutter!** Just 2 words to create validated state providers with built-in error handling.
+
+**🎯 Key Features**:
+
+- **✨ Ultra-Short Presets**:
+  - `"".emailState` - Email validation in just 2 words!
+  - `"".passwordState` - Password validation in just 2 words!
+  - `0.ageState` - Age validation in just 2 words!
+  - Includes built-in error messages and validation logic
+
+- **🎯 Fluent Builder API**:
+  - `"".validationBuilder.contains('@')(null, 'Must contain @')`
+  - `"".validationBuilder.minLength(8)(null, 'Too short')`
+  - `0.validationBuilder.min(18)(null, 'Must be 18+')`
+  - Chain multiple validation rules with readable syntax
+
+- **🛠️ Custom Validation**:
+  - `"".validState((value) => value.length > 3 ? null : "Too short")`
+  - Full control with custom validation functions
+
+- **⚡ Zero Boilerplate Integration**:
+  - Works seamlessly with existing `.state` pattern
+  - `provider.isValid(ref)` - Check if field is valid
+  - `provider.errorMessage(ref)` - Get error message for UI
+  - `provider.set(ref, value)` - Update value with validation
+
+**🚀 Usage Examples**:
+
+```dart
+// Ultra-short validation (just 2 words!)
+final email = "".emailState;
+final password = "".passwordState;
+final age = 0.ageState;
+
+// In your UI
+TextField(
+  onChanged: (value) => email.set(ref, value),
+  decoration: InputDecoration(
+    errorText: email.errorMessage(ref), // One liner!
+  ),
+)
+
+// Check validation
+if (email.isValid(ref) && password.isValid(ref)) {
+  // Form is valid!
+}
+```
+
+See [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) for comprehensive examples and advanced usage.
+
 ## [1.0.8] - 2025-08-06
 
 ### 🔥 **MAJOR REFACTORING: The `.state` Revolution**

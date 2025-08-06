@@ -65,6 +65,7 @@ export 'src/utils/sugar_validation.dart';
 // Ultra-concise extensions - ScreenUtil style (.r, .sp, .w, .h)
 export 'src/extensions/sugar_extensions.dart' hide ListSugar, ListProviderSugar;
 export 'src/extensions/advanced_sugar_extensions.dart';
+export 'src/extensions/validation_extensions.dart';
 
 // Navigation helpers - Make routing with state management simple
 export 'src/navigation/navigation_sugar.dart';

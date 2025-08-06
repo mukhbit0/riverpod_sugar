@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_sugar/riverpod_sugar.dart';
 import 'ref_syntax_demo.dart';
 import 'advanced_demo_app.dart';
+import 'validation_demo.dart';
 
 // --- Providers using Enhanced Sugar Syntax ---
 
@@ -170,6 +171,19 @@ class HomeScreen extends RxWidget {
                 label: const Text('🚀 Navigation Sugar Demo'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // NEW: Validation Demo
+              ElevatedButton.icon(
+                onPressed: () => ref.pushPage(const ValidationDemo()),
+                icon: const Icon(Icons.verified_user),
+                label: const Text('🔥 Ultra-Simple Validation Demo'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.all(16),
                 ),
